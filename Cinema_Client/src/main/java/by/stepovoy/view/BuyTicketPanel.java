@@ -24,7 +24,7 @@ public class BuyTicketPanel extends JDialog {
     private JButton buyButton;
     private double totalCost;
     private int totalTickets;
-    String ticketNumber = null;
+    private String ticketNumber = null;
 
     public BuyTicketPanel(JFrame parentFrame, User user, final Seance seance, boolean isModal) {
         super(parentFrame, isModal);
@@ -35,7 +35,6 @@ public class BuyTicketPanel extends JDialog {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout());
-//        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         setContentPane(mainPanel);
 

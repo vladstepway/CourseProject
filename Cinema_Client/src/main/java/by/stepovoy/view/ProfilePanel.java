@@ -53,7 +53,7 @@ public class ProfilePanel extends JFrame {
             }
         });
         setTitle("Профиль");
-        setBounds(720, 200, 480, 640);
+        setBounds(720, 200, 480, 550);
         setResizable(false);
         background = new JPanel() {
             @Override
@@ -106,7 +106,7 @@ public class ProfilePanel extends JFrame {
             labelLayers[i] = new JLabel(labels[i]);
             labelLayers[i].setPreferredSize(new Dimension(150, 25));
             labelLayers[i].setHorizontalAlignment(SwingConstants.LEFT);
-            labelLayers[i].setForeground(new Color(0, 0, 255));
+            labelLayers[i].setForeground(new Color(142, 153, 255));
             panels[i].setLayout(new BoxLayout(panels[i], BoxLayout.LINE_AXIS));
             panels[i].setPreferredSize(new Dimension(300, 25));
             panels[i].add(Box.createRigidArea(new Dimension(15, 0)));
@@ -186,7 +186,7 @@ public class ProfilePanel extends JFrame {
             user.setBirthday(new Date(((java.util.Date) dateField.getModel().getValue()).getTime()));
 
             Message message = new Message();
-            message.setOperationType(MessageType.EDIT);
+            message.setOperationType(MessageType.UPDATE);
             message.setMessageType(MessageType.USER);
             message.setMessage(user);
             try {

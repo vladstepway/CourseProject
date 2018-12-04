@@ -140,7 +140,7 @@ public class UserControlPanel extends JFrame {
                     (user.getRole() == Role.USER ? Role.MODER : Role.USER)
             );
             message = new Message();
-            message.setOperationType(MessageType.EDIT);
+            message.setOperationType(MessageType.UPDATE);
             message.setMessageType(MessageType.USER);
             message.setMessage(user);
             ClientThread.sendMessage(message);

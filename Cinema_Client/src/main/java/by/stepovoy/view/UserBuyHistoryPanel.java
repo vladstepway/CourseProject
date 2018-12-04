@@ -45,7 +45,7 @@ public class UserBuyHistoryPanel extends JFrame {
         setResizable(false);
         List<Ticket> ticketList = null;
         try {
-            ticketList = ClientThread.getTicketsOf(user);
+            ticketList = ClientThread.getUserTickets(user);
         } catch (Exception e) {
             e.printStackTrace();
         }

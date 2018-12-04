@@ -4,18 +4,22 @@ import by.stepovoy.FormValidator;
 import by.stepovoy.client.ClientThread;
 import by.stepovoy.message.MessageType;
 import by.stepovoy.user.User;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import java.sql.Date;
+
 import java.util.Properties;
 
 public class RegistrationPanel extends JFrame {

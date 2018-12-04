@@ -22,28 +22,24 @@ public class ClientThread extends Thread {
 
     private static ObjectOutput objectOutput;
     private static ObjectInput objectInput;
-    private Socket socket;
     private MessageType messageType;
     private MessageType operationType;
     private User user;
     private JFrame mainFrame;
     private JFrame parentFrame;
     private Object[] additions;
-    private int port;
 
     public ClientThread(MessageType operationType, MessageType messageType, User user,
                         JFrame mainFrame, JFrame parentFrame, int port, Object... additions) {
         this.operationType = operationType;
         this.messageType = messageType;
         this.user = user;
-
         this.mainFrame = mainFrame;
         this.parentFrame = parentFrame;
         this.additions = additions;
 
-        Socket socket;
         try {
-            socket = new Socket(InetAddress.getLocalHost(), port);
+            Socket socket = new Socket(InetAddress.getLocalHost(), port);
             if (objectOutput == null) {
                 objectOutput = new ObjectOutputStream(socket.getOutputStream());
             }
@@ -78,6 +74,7 @@ public class ClientThread extends Thread {
                                         JOptionPane.INFORMATION_MESSAGE);
                                 parentFrame.dispose();
                                 MenuPanel menuPanel = new MenuPanel(mainFrame, (User) messageFromServer.getMessage());
+                                menuPanel.setLocationRelativeTo(null);
                                 menuPanel.setVisible(true);
                             } else {
 //                                System.out.println(incomingMsg.getMessageType());
@@ -90,7 +87,6 @@ public class ClientThread extends Thread {
                         }
                         case IN: {
                             messageFromServer = (Message) objectInput.readObject();
-//                            System.out.println(message.getMessage().toString());
                             if (messageFromServer.getMessageType() == MessageType.COMPLETE) {
                                 for (Object field : additions) {
                                     ((JTextField) field).setBorder(BorderFactory.createLineBorder(Color.GREEN));
@@ -101,6 +97,7 @@ public class ClientThread extends Thread {
                                         JOptionPane.INFORMATION_MESSAGE);
                                 parentFrame.dispose();
                                 MenuPanel menuPanel = new MenuPanel(mainFrame, (User) messageFromServer.getMessage());
+                                menuPanel.setLocationRelativeTo(null);
                                 menuPanel.setVisible(true);
                             } else {
                                 for (Object field : additions) {
@@ -123,7 +120,7 @@ public class ClientThread extends Thread {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(parentFrame,
-                    "Сервер недоступен.",
+                    "Сервер недоступен",
                     "Ошибка подключения к серверу",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -146,7 +143,6 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         objectOutput.flush();
         message = (Message) objectInput.readObject();
-//        System.out.println(message.getMessage().toString());
         return message.getUserList();
     }
 
@@ -170,21 +166,8 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         objectOutput.flush();
         message = (Message) objectInput.readObject();
-//        System.out.println(message.getMessage().toString());
         return message.getFilmList();
     }
-
-//    public static List<Session> getInstitutionSessions(Institution institution) throws IOException, ClassNotFoundException {
-//        Message message = new Message();
-//        message.setOperationType(MessageType.GET);
-//        message.setMessageType(MessageType.INSTITUTION_SESSION);
-//        message.setMessage(institution.getID());
-//        objectOutput.writeObject(message);
-//        objectOutput.flush();
-//        message = (Message) objectInput.readObject();
-////        System.out.println(message.getMessage().toString());
-//        return message.getSeanceList();
-//    }
 
     public static List<Seance> getFilmSeance(Film film) throws IOException, ClassNotFoundException {
         Message message = new Message();
@@ -194,7 +177,6 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         objectOutput.flush();
         message = (Message) objectInput.readObject();
-        //System.out.println(message.getMessage().toString());
         List<Seance> seanceList = message.getSeanceList();
         List<Seance> resultList = new ArrayList<>();
         for (Seance seance : seanceList) {
@@ -226,11 +208,10 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         objectOutput.flush();
         message = (Message) objectInput.readObject();
-//        System.out.println(message.getMessage().toString());
         return message.getTicketList();
     }
 
-    public static List<Ticket> getTicketsOf(User user) throws IOException, ClassNotFoundException {
+    public static List<Ticket> getUserTickets(User user) throws IOException, ClassNotFoundException {
         Message message = new Message();
         message.setOperationType(MessageType.GET);
         message.setMessageType(MessageType.TICKET);

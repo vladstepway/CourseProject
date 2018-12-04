@@ -24,7 +24,7 @@ public class AuthorizationPanel extends JFrame {
         this.port = port;
         this.parentFrame = parentFrame;
         setTitle(" Авторизация");
-        setBounds(650, 280, 580, 420);
+        setBounds(650, 280, 450, 420);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -99,7 +99,7 @@ public class AuthorizationPanel extends JFrame {
             mainPanel.add(panel);
         }
         background.add(mainPanel);
-        mainPanel.setBounds(20, 150, 620, 440);
+        mainPanel.setBounds(20, 150, 500, 440);
 
         JButton acceptButton = new JButton("Авторизироваться");
         acceptButton.setPreferredSize(new Dimension(170, 25));
@@ -118,8 +118,8 @@ public class AuthorizationPanel extends JFrame {
             }
         });
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
-        buttonsPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+
         buttonsPanel.add(acceptButton);
         buttonsPanel.add(cancelButton);
         buttonsPanel.add(Box.createRigidArea(new Dimension(50, 0)));
@@ -163,8 +163,8 @@ public class AuthorizationPanel extends JFrame {
                     case KeyEvent.VK_ESCAPE:
                         cancelActionPerformed(null);
                         break;
-                        default:
-                            break;
+                    default:
+                        break;
                 }
             }
 
