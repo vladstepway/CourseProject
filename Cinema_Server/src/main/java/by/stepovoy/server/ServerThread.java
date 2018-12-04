@@ -16,32 +16,40 @@ import by.stepovoy.model.Ticket;
 import by.stepovoy.user.User;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ServerThread extends Thread {
+
+    static int connectionNumber = 0;
+    private InetAddress address;
 
     private Socket socket;
     private Connection connection;
     private DaoFactorySQL daoFactory;
-    private java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(String.valueOf(this.getClass()));
+    private Logger LOGGER = Logger.getLogger(String.valueOf(this.getClass()));
+    private ObjectInput objectInput;
+    private ObjectOutput objectOutput;
 
-    ServerThread(Socket socket) throws SQLException {
-        this.socket = socket;
+    ServerThread(Socket client) throws SQLException {
+        this.socket = client;
         daoFactory = new DaoFactorySQL();
         connection = daoFactory.getConnection();
+        address = socket.getInetAddress();
+        connectionNumber++;
     }
 
     @Override
     public void run() {
-        System.out.println(socket.getInetAddress().getHostName() +
-                " " + socket.getInetAddress() + " connected ");
         try {
-            ObjectInput objectInput = new ObjectInputStream(socket.getInputStream());
-            ObjectOutput objectOutput = new ObjectOutputStream(socket.getOutputStream());
+            objectInput = new ObjectInputStream(socket.getInputStream());
+            objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
             daoFactory = new DaoFactorySQL();
             IGenericDao dao = null;
@@ -292,11 +300,28 @@ public class ServerThread extends Thread {
                 objectOutput.writeObject(answer);
                 //objectOutput.flush();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Client disconnected.");
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+    }
+
+    private void disconnect() {
+        try {
+            if (objectOutput != null) {
+                objectOutput.close();
+            }
+            if (objectInput != null) {
+                objectInput.close();
+            }
+           LOGGER.info("Disconnected : " + address.getHostAddress());
+            connectionNumber--;
+            LOGGER.info("Current users online : " + connectionNumber);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            this.interrupt();
         }
     }
 }

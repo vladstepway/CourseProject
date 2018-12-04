@@ -136,7 +136,7 @@ public class UpdateFilmPanel extends JFrame {
                 ex.printStackTrace();
             }
             message = new Message();
-            message.setOperationType(MessageType.EDIT);
+            message.setOperationType(MessageType.UPDATE);
             message.setMessageType(messageType);
 
 

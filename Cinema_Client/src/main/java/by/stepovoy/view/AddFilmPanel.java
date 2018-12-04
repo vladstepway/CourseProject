@@ -167,7 +167,7 @@ public class AddFilmPanel extends JFrame {
         descriptionField = new JTextArea();
         descriptionField.setLineWrap(true);
         descriptionField.setWrapStyleWord(true);
-        descriptionField.setRows(5);
+        descriptionField.setRows(6);
         descriptionField.setBorder(durationField.getBorder());
         yearField = new JTextField();
         genreField = new JTextField();
@@ -177,7 +177,7 @@ public class AddFilmPanel extends JFrame {
         JPanel is3DPanel = new JPanel();
         is3DPanel.setLayout(new FlowLayout());
         is3DPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        yesRadioButton = new JRadioButton("да");
+        yesRadioButton = new JRadioButton("Да");
         yesRadioButton.setOpaque(false);
         yesRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -187,7 +187,7 @@ public class AddFilmPanel extends JFrame {
                 }
             }
         });
-        noRadioButton = new JRadioButton("нет");
+        noRadioButton = new JRadioButton("Нет");
         noRadioButton.setOpaque(false);
         noRadioButton.setSelected(true);
         noRadioButton.addActionListener(new ActionListener() {
