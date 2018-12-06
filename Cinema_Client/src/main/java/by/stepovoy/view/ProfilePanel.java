@@ -1,10 +1,11 @@
 package by.stepovoy.view;
 
-import by.stepovoy.FormValidator;
+import by.stepovoy.utils.FormValidator;
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
-import by.stepovoy.user.User;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
+import by.stepovoy.model.user.User;
+import by.stepovoy.utils.DateValidator;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -95,7 +96,7 @@ public class ProfilePanel extends JFrame {
         properties.put("text.month", "Month");
         properties.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(new UtilDateModel(), properties);
-        dateField = new JDatePickerImpl(datePanel, new DateFormatter());
+        dateField = new JDatePickerImpl(datePanel, new DateValidator());
         dateField.setSize(new Dimension(180, 40));
         dateField.getJFormattedTextField().setText(user.getBirthday());
 

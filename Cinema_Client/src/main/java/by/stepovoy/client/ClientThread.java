@@ -1,12 +1,12 @@
 package by.stepovoy.client;
 
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.User;
 import by.stepovoy.view.MenuPanel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

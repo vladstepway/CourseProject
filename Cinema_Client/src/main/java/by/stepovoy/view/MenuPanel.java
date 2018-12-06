@@ -1,7 +1,7 @@
 package by.stepovoy.view;
 
-import by.stepovoy.user.Role;
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.Role;
+import by.stepovoy.model.user.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.imageio.ImageIO;
@@ -252,7 +252,7 @@ public class MenuPanel extends JFrame {
 //        }
 //        if (writer != null) {
 //            writer.close();
-//        
+//
 
     }
 }

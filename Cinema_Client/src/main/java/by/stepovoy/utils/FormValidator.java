@@ -1,11 +1,10 @@
-package by.stepovoy;
+package by.stepovoy.utils;
 
 import org.jdatepicker.impl.JDatePickerImpl;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 public class FormValidator {

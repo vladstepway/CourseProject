@@ -1,10 +1,10 @@
 package by.stepovoy.view;
 
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
-import by.stepovoy.user.Role;
-import by.stepovoy.user.User;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
+import by.stepovoy.model.user.Role;
+import by.stepovoy.model.user.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

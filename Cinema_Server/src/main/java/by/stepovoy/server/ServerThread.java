@@ -1,24 +1,19 @@
 package by.stepovoy.server;
 
-import by.stepovoy.MyException;
-
-import by.stepovoy.dao.DaoFactorySQL;
+import by.stepovoy.utils.MyException;
+import by.stepovoy.dao.DaoFactory;
 import by.stepovoy.dao.IGenericDao;
-
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
-
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.User;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -32,14 +27,14 @@ public class ServerThread extends Thread {
 
     private Socket socket;
     private Connection connection;
-    private DaoFactorySQL daoFactory;
+    private DaoFactory daoFactory;
     private Logger LOGGER = Logger.getLogger(String.valueOf(this.getClass()));
     private ObjectInput objectInput;
     private ObjectOutput objectOutput;
 
     ServerThread(Socket client) throws SQLException {
         this.socket = client;
-        daoFactory = new DaoFactorySQL();
+        daoFactory = new DaoFactory();
         connection = daoFactory.getConnection();
         address = socket.getInetAddress();
         connectionNumber++;
@@ -51,7 +46,7 @@ public class ServerThread extends Thread {
             objectInput = new ObjectInputStream(socket.getInputStream());
             objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
-            daoFactory = new DaoFactorySQL();
+            daoFactory = new DaoFactory();
             IGenericDao dao = null;
             Message request;
             Message answer = null;

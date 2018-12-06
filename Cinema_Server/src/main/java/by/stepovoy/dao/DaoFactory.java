@@ -1,18 +1,18 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.User;
 
 import java.lang.reflect.Constructor;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DaoFactorySQL implements IDaoFactory {
+public class DaoFactory implements IDaoFactory {
 
     private static final String URL = "jdbc:mysql://localhost:3306/cinema?useUnicode=" +
             "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=" +
@@ -27,7 +27,8 @@ public class DaoFactorySQL implements IDaoFactory {
     private static Statement statement;
     private static ResultSet resultSet;
 
-    public DaoFactorySQL() throws SQLException {
+    public DaoFactory() throws SQLException {
+
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -69,27 +70,11 @@ public class DaoFactorySQL implements IDaoFactory {
         return creator.createDao(connection);
     }
 
-//    public boolean isConnected() throws SQLException {
-//        return connection.isValid(0);
-//    }
-//
-//    public boolean isLoginFree(String login) throws SQLException {
-//        statement = connection.createStatement();
-//        resultSet = statement.executeQuery(findLogin(login));
-//        return !resultSet.first();
-//    }
-
     public boolean isLoginFree(User user) throws SQLException {
         statement = connection.createStatement();
         resultSet = statement.executeQuery(findLogin(user.getLogin()));
         return !resultSet.first();
     }
-
-//    public boolean isEmailFree(String email) throws SQLException {
-//        statement = connection.createStatement();
-//        resultSet = statement.executeQuery(findEmail(email));
-//        return !resultSet.first();
-//    }
 
     public boolean isEmailFree(User user) throws SQLException {
         statement = connection.createStatement();
@@ -97,9 +82,6 @@ public class DaoFactorySQL implements IDaoFactory {
         return !resultSet.first();
     }
 
-//    public Map<Class, IDaoCreator> getCreators() {
-//        return creators;
-//    }
 
     public static String findLogin(String login) {
         StringBuilder sb = new StringBuilder();

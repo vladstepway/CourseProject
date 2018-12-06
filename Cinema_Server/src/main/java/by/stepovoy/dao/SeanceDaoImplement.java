@@ -1,24 +1,17 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Seance;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class SeanceDaoImplement extends AbstractDao<Seance> {
 
-    private static final String TABLE_NAME = " cinema.seance ";
-    private final static String SELECT_ALL_QUERY = "select * from " + TABLE_NAME;
-    private final static String INSERT_QUERY = "INSERT INTO " + TABLE_NAME +
-            " (hallID, filmID, seanceTime, seanceDate, ticketCost, ticketsLeft)" +
-            "VALUES (?, ?, ?, ?, ?, ?);";
-    private final static String DELETE_QUERY = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?;";
-    private final static String UPDATE_QUERY = "UPDATE " + TABLE_NAME + " SET sessionTime = ?," +
-            " sessionDate = ?, ticketCost = ?, ticketsLeft = ? WHERE ID = ?;";
 
     public SeanceDaoImplement(Connection connection) {
         super(connection);
@@ -27,22 +20,22 @@ public class SeanceDaoImplement extends AbstractDao<Seance> {
 
     @Override
     String getSelectQuery() {
-        return SELECT_ALL_QUERY;
+        return SqlConstants.SEANCE_SELECT_ALL_QUERY;
     }
 
     @Override
     String getUpdateQuery() {
-        return UPDATE_QUERY;
+        return SqlConstants.SEANCE_UPDATE_QUERY;
     }
 
     @Override
     String getDeleteQuery() {
-        return DELETE_QUERY;
+        return SqlConstants.SEANCE_DELETE_QUERY;
     }
 
     @Override
     String getInsertQuery() {
-        return INSERT_QUERY;
+        return SqlConstants.SEANCE_INSERT_QUERY;
     }
 
 
@@ -51,14 +44,19 @@ public class SeanceDaoImplement extends AbstractDao<Seance> {
         try {
             logger.info("UPDATE TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setTime(++i, object.getSeanceTime());
-            statement.setDate(++i, object.getSeanceDate());
-            statement.setDouble(++i, object.getTicketCost());
-            statement.setInt(++i, object.getTicketsLeft());
+            i = setSeancePreparedStatement(statement, object, i);
             statement.setInt(++i, object.getID());
         } catch (Exception e) {
             throw new MyException(e);
         }
+    }
+
+    private int setSeancePreparedStatement(PreparedStatement statement, Seance object, int i) throws SQLException {
+        statement.setTime(++i, object.getSeanceTime());
+        statement.setDate(++i, object.getSeanceDate());
+        statement.setDouble(++i, object.getTicketCost());
+        statement.setInt(++i, object.getTicketsLeft());
+        return i;
     }
 
     @Override
@@ -68,11 +66,7 @@ public class SeanceDaoImplement extends AbstractDao<Seance> {
             int i = 0;
             statement.setInt(++i, object.getHallID());
             statement.setInt(++i, object.getFilmID());
-            statement.setTime(++i, object.getSeanceTime());
-            statement.setDate(++i, object.getSeanceDate());
-            statement.setDouble(++i, object.getTicketCost());
-            statement.setInt(++i, object.getTicketsLeft());
-            System.out.println("INSERT TO\n" + object);
+            setSeancePreparedStatement(statement, object, i);
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -92,7 +86,6 @@ public class SeanceDaoImplement extends AbstractDao<Seance> {
                 seance.setSeanceDate(resultSet.getDate("seanceDate"));
                 seance.setTicketCost(resultSet.getDouble("ticketCost"));
                 seance.setTicketsLeft(resultSet.getInt("ticketsLeft"));
-                System.out.println("PARSE OF SEANCE\n " + seance.toString());
                 result.add(seance);
             }
         } catch (Exception e) {
@@ -104,7 +97,6 @@ public class SeanceDaoImplement extends AbstractDao<Seance> {
     @Override
     public Seance create() throws MyException {
         logger.info("SAVING  =========== >  " + this.getClass().getSimpleName());
-        System.out.println("SEANCE SAVE " + this.toString());
         return save(new Seance());
     }
 

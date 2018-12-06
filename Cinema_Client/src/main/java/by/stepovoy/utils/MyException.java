@@ -1,4 +1,4 @@
-package by.stepovoy;
+package by.stepovoy.utils;
 
 public class MyException extends Exception {
     public MyException() {

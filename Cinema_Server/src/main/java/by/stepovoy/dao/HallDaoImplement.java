@@ -1,24 +1,16 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Hall;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class HallDaoImplement extends AbstractDao<Hall> {
-
-    private static final String TABLE_NAME = " cinema.hall ";
-    private final static String SELECT_ALL_QUERY = "select * from " + TABLE_NAME;
-    private final static String INSERT_QUERY = "insert into " + TABLE_NAME +
-            " (type, name, floor, description, managerPhone, capacity)" +
-            "VALUES (?, ?, ?, ?, ?, ?);";
-    private final static String DELETE_QUERY = "delete from " + TABLE_NAME + " WHERE ID = ?;";
-    private final static String UPDATE_QUERY = "update " + TABLE_NAME + " set type = ?, name = ?, floor = ?, description = ?, " +
-            "managerPhone = ?, capacity = ? WHERE ID = ?;";
 
     public HallDaoImplement(Connection connection) {
         super(connection);
@@ -27,39 +19,46 @@ public class HallDaoImplement extends AbstractDao<Hall> {
 
     @Override
     String getSelectQuery() {
-        return SELECT_ALL_QUERY;
+        return SqlConstants.HALL_SELECT_ALL_QUERY;
     }
 
     @Override
     String getUpdateQuery() {
-        return UPDATE_QUERY;
+        return SqlConstants.HALL_UPDATE_QUERY;
     }
 
     @Override
     String getDeleteQuery() {
-        return DELETE_QUERY;
+        return SqlConstants.HALL_DELETE_QUERY;
     }
 
     @Override
     String getInsertQuery() {
-        return INSERT_QUERY;
+        return SqlConstants.HALL_INSERT_QUERY;
     }
 
     @Override
     void prepareUpdateStatement(PreparedStatement statement, Hall object) throws MyException {
         try {
             logger.info("UPDATE TO  =========== >  :" + this.getClass().getSimpleName());
+
             int i = 0;
-            statement.setString(++i, object.getType());
-            statement.setString(++i, object.getName());
-            statement.setString(++i, object.getFloor());
-            statement.setString(++i, object.getDescription());
-            statement.setString(++i, object.getManagerPhone());
-            statement.setInt(++i, object.getCapacity());
+            i = setPreparedStatementHall(statement, object, i);
+
             statement.setInt(++i, object.getID());
         } catch (Exception e) {
             throw new MyException(e);
         }
+    }
+
+    private int setPreparedStatementHall(PreparedStatement statement, Hall object, int i) throws SQLException {
+        statement.setString(++i, object.getType());
+        statement.setString(++i, object.getName());
+        statement.setString(++i, object.getFloor());
+        statement.setString(++i, object.getDescription());
+        statement.setString(++i, object.getManagerPhone());
+        statement.setInt(++i, object.getCapacity());
+        return i;
     }
 
     @Override
@@ -67,12 +66,7 @@ public class HallDaoImplement extends AbstractDao<Hall> {
         try {
             logger.info("INSERT TO  =========== > " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setString(++i, object.getType());
-            statement.setString(++i, object.getName());
-            statement.setString(++i, object.getFloor());
-            statement.setString(++i, object.getDescription());
-            statement.setString(++i, object.getManagerPhone());
-            statement.setInt(++i, object.getCapacity());
+            setPreparedStatementHall(statement, object, i);
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -92,7 +86,6 @@ public class HallDaoImplement extends AbstractDao<Hall> {
                 hall.setDescription(resultSet.getString("description"));
                 hall.setManagerPhone(resultSet.getString("managerPhone"));
                 hall.setCapacity(resultSet.getInt("capacity"));
-                System.out.println("IN PARSE OF\n" + hall);
                 result.add(hall);
             }
         } catch (Exception e) {

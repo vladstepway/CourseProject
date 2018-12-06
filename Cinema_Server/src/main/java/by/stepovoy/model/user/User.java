@@ -1,6 +1,6 @@
-package by.stepovoy.user;
+package by.stepovoy.model.user;
 
-import by.stepovoy.IKey;
+import by.stepovoy.utils.IKey;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -98,6 +98,7 @@ public class User implements IKey, Serializable {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+
 
     @Override
     public boolean equals(Object o) {

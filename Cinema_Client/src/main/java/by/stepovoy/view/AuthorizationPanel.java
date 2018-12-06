@@ -1,9 +1,9 @@
 package by.stepovoy.view;
 
-import by.stepovoy.FormValidator;
+import by.stepovoy.utils.FormValidator;
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.message.MessageType;
-import by.stepovoy.user.User;
+import by.stepovoy.utils.MessageType;
+import by.stepovoy.model.user.User;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
