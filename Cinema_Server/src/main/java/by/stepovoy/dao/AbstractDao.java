@@ -36,9 +36,9 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
     public T get(int id) throws MyException {
         logger.info("GET FROM  =========== > " + this.getClass().getSimpleName());
         List<T> list = null;
-        String selectQuery = getSelectQuery() + " where id = ?";
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(getSelectQuery() + " where id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = parseResultSet(resultSet);
@@ -58,11 +58,9 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
 
     public List<T> getBy(String argument, String value) throws MyException {
         logger.info("GET BY FROM  =========== > " + this.getClass().getSimpleName());
-        List<T> list = null;
-
-        String selectQuery = getSelectQuery() + " WHERE " + argument + " = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+        List<T> list;
+        try (PreparedStatement preparedStatement
+                     = connection.prepareStatement(getSelectQuery() + " WHERE " + argument + " = ?")) {
             preparedStatement.setString(1, value);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = parseResultSet(resultSet);

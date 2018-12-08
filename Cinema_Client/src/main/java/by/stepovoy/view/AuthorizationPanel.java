@@ -183,7 +183,8 @@ public class AuthorizationPanel extends JFrame {
             User user = new User();
             user.setLogin(loginField.getText());
             user.setPassword(String.valueOf(passwordField.getPassword()));
-            ClientThread clientThread = new ClientThread(MessageType.SIGN, MessageType.IN, user, parentFrame, this, port, loginField, passwordField);
+            ClientThread clientThread = new ClientThread(MessageType.SIGN, MessageType.IN, user, parentFrame,
+                    this, port, loginField, passwordField);
             clientThread.start();
         } else {
             loginField.setBorder(BorderFactory.createLineBorder(Color.RED));

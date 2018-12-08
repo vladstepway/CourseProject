@@ -1,25 +1,25 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
 import by.stepovoy.model.user.User;
+import by.stepovoy.utils.MyException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class DaoFactory implements IDaoFactory {
-
-    private static final String URL = "jdbc:mysql://localhost:3306/cinema?useUnicode=" +
-            "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=" +
-            "false&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
 
     private Map<Class, IDaoCreator> creators;
 
@@ -27,11 +27,28 @@ public class DaoFactory implements IDaoFactory {
     private static Statement statement;
     private static ResultSet resultSet;
 
-    public DaoFactory() throws SQLException {
+    public DaoFactory() throws SQLException, IOException, ClassNotFoundException {
 
-        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+
+        Properties props = new Properties();
+        FileInputStream in = new FileInputStream("src/main/resources/database-config.properties");
+        props.load(in);
+        in.close();
+
+        String driver = props.getProperty("jdbc.driver");
+        if (driver != null) {
+            Class.forName(driver);
+        }
+
+        String url = props.getProperty("jdbc.url");
+        String username = props.getProperty("jdbc.username");
+        String password = props.getProperty("jdbc.password");
+
+
+        connection = DriverManager.getConnection(url, username, password);
+
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -84,19 +101,11 @@ public class DaoFactory implements IDaoFactory {
 
 
     public static String findLogin(String login) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM users WHERE Login = \'");
-        sb.append(login);
-        sb.append("\'");
-        return sb.toString();
+        return "select * from users where Login = " + login;
     }
 
     public static String findEmail(String email) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM users WHERE Email = \'");
-        sb.append(email);
-        sb.append("\'");
-        return sb.toString();
+        return "select * from users where Email = " + email;
     }
 
 }
