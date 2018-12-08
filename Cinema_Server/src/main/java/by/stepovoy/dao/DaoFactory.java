@@ -1,25 +1,25 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.User;
+import by.stepovoy.utils.MyException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
-public class DaoFactorySQL implements IDaoFactory {
-
-    private static final String URL = "jdbc:mysql://localhost:3306/cinema?useUnicode=" +
-            "true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=" +
-            "false&serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
-
+public class DaoFactory implements IDaoFactory {
 
     private Map<Class, IDaoCreator> creators;
 
@@ -27,10 +27,28 @@ public class DaoFactorySQL implements IDaoFactory {
     private static Statement statement;
     private static ResultSet resultSet;
 
-    public DaoFactorySQL() throws SQLException {
-        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    public DaoFactory() throws SQLException, IOException, ClassNotFoundException {
+
+
+        Properties props = new Properties();
+        FileInputStream in = new FileInputStream("src/main/resources/database-config.properties");
+        props.load(in);
+        in.close();
+
+        String driver = props.getProperty("jdbc.driver");
+        if (driver != null) {
+            Class.forName(driver);
+        }
+
+        String url = props.getProperty("jdbc.url");
+        String username = props.getProperty("jdbc.username");
+        String password = props.getProperty("jdbc.password");
+
+
+        connection = DriverManager.getConnection(url, username, password);
+
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -69,27 +87,11 @@ public class DaoFactorySQL implements IDaoFactory {
         return creator.createDao(connection);
     }
 
-//    public boolean isConnected() throws SQLException {
-//        return connection.isValid(0);
-//    }
-//
-//    public boolean isLoginFree(String login) throws SQLException {
-//        statement = connection.createStatement();
-//        resultSet = statement.executeQuery(findLogin(login));
-//        return !resultSet.first();
-//    }
-
     public boolean isLoginFree(User user) throws SQLException {
         statement = connection.createStatement();
         resultSet = statement.executeQuery(findLogin(user.getLogin()));
         return !resultSet.first();
     }
-
-//    public boolean isEmailFree(String email) throws SQLException {
-//        statement = connection.createStatement();
-//        resultSet = statement.executeQuery(findEmail(email));
-//        return !resultSet.first();
-//    }
 
     public boolean isEmailFree(User user) throws SQLException {
         statement = connection.createStatement();
@@ -97,24 +99,13 @@ public class DaoFactorySQL implements IDaoFactory {
         return !resultSet.first();
     }
 
-//    public Map<Class, IDaoCreator> getCreators() {
-//        return creators;
-//    }
 
     public static String findLogin(String login) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM users WHERE Login = \'");
-        sb.append(login);
-        sb.append("\'");
-        return sb.toString();
+        return "select * from users where Login = " + login;
     }
 
     public static String findEmail(String email) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT * FROM users WHERE Email = \'");
-        sb.append(email);
-        sb.append("\'");
-        return sb.toString();
+        return "select * from users where Email = " + email;
     }
 
 }

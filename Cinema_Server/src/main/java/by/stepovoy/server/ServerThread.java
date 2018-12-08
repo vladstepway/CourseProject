@@ -1,27 +1,21 @@
 package by.stepovoy.server;
 
-import by.stepovoy.MyException;
-
-import by.stepovoy.dao.DaoFactorySQL;
+import by.stepovoy.dao.DaoFactory;
 import by.stepovoy.dao.IGenericDao;
-
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
-
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-
-import by.stepovoy.user.User;
+import by.stepovoy.model.user.User;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
+import by.stepovoy.utils.MyException;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -32,14 +26,14 @@ public class ServerThread extends Thread {
 
     private Socket socket;
     private Connection connection;
-    private DaoFactorySQL daoFactory;
+    private DaoFactory daoFactory;
     private Logger LOGGER = Logger.getLogger(String.valueOf(this.getClass()));
     private ObjectInput objectInput;
     private ObjectOutput objectOutput;
 
-    ServerThread(Socket client) throws SQLException {
+    ServerThread(Socket client) throws SQLException, IOException, ClassNotFoundException {
         this.socket = client;
-        daoFactory = new DaoFactorySQL();
+        daoFactory = new DaoFactory();
         connection = daoFactory.getConnection();
         address = socket.getInetAddress();
         connectionNumber++;
@@ -51,9 +45,9 @@ public class ServerThread extends Thread {
             objectInput = new ObjectInputStream(socket.getInputStream());
             objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
-            daoFactory = new DaoFactorySQL();
+            daoFactory = new DaoFactory();
             IGenericDao dao = null;
-            Message request;
+            Message request ;
             Message answer = null;
             User user;
             MessageType operationType;
@@ -132,8 +126,6 @@ public class ServerThread extends Thread {
                             case SEANCE:
                                 LOGGER.info("********* SEANCE *********");
                                 dao = daoFactory.getDaoClass(connection, Seance.class);
-                                System.out.println("ADDING SEANCE\n" + request.getMessage().toString());
-                                System.out.println("ANSWER \n" + answer.getMessage().toString());
                                 dao.save(request.getMessage());
 
                                 answer = new Message();
@@ -257,7 +249,6 @@ public class ServerThread extends Thread {
                                     LOGGER.info("********* ALL SEANCES *********");
                                     answer = new Message();
                                     answer.setMessage("all seances");
-                                    System.out.println("ALL SEANCES\n" + Arrays.toString(dao.getAll().toArray()));
                                     answer.setSeanceList(dao.getAll());
                                 } else {
                                     answer = new Message();
@@ -268,7 +259,6 @@ public class ServerThread extends Thread {
                                 LOGGER.info(" ********* HALL_SEANCE *********");
                                 dao = daoFactory.getDaoClass(connection, Seance.class);
                                 answer = new Message();
-                                System.out.println("HALL SEANCE HERE\n" + answer);
                                 answer.setMessage("all seances");
                                 answer.setSeanceList(dao.getBy("hallID", String.valueOf(request.getMessage())));
                                 break;
@@ -276,7 +266,6 @@ public class ServerThread extends Thread {
                                 LOGGER.info("********* FILM_SEANCE *********");
                                 dao = daoFactory.getDaoClass(connection, Seance.class);
                                 answer = new Message();
-                                System.out.println("HALL SEANCE HERE\n" + answer);
                                 answer.setMessage("all seances");
                                 answer.setSeanceList(dao.getBy("filmID", String.valueOf(request.getMessage())));
                                 break;
@@ -298,7 +287,6 @@ public class ServerThread extends Thread {
                         break;
                 }
                 objectOutput.writeObject(answer);
-                //objectOutput.flush();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -315,7 +303,7 @@ public class ServerThread extends Thread {
             if (objectInput != null) {
                 objectInput.close();
             }
-           LOGGER.info("Disconnected : " + address.getHostAddress());
+            LOGGER.info("Disconnected : " + address.getHostAddress());
             connectionNumber--;
             LOGGER.info("Current users online : " + connectionNumber);
         } catch (IOException e) {

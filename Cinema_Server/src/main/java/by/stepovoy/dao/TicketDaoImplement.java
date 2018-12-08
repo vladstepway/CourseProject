@@ -1,24 +1,17 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Ticket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TicketDaoImplement extends AbstractDao<Ticket> {
 
-    private static final String TABLE_NAME = " cinema.ticket ";
-    private final static String SELECT_ALL_QUERY = "select * from " + TABLE_NAME;
-    private final static String INSERT_QUERY = "INSERT INTO " + TABLE_NAME +
-            " (seanceID, userID, amount, cost, seatNumber) " +
-            "VALUES (?, ?, ?, ?, ?);";
-    private final static String DELETE_QUERY = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?;";
-    private final static String UPDATE_QUERY = "UPDATE " + TABLE_NAME + " SET seanceID = ?," +
-            " userID = ?, amount = ?, cost = ?, seatNumber = ? WHERE ID = ?;";
 
     public TicketDaoImplement(Connection connection) {
         super(connection);
@@ -27,22 +20,22 @@ public class TicketDaoImplement extends AbstractDao<Ticket> {
 
     @Override
     String getSelectQuery() {
-        return SELECT_ALL_QUERY;
+        return SqlConstants.TICKET_SELECT_ALL_QUERY;
     }
 
     @Override
     String getUpdateQuery() {
-        return UPDATE_QUERY;
+        return SqlConstants.TICKET_UPDATE_QUERY;
     }
 
     @Override
     String getDeleteQuery() {
-        return DELETE_QUERY;
+        return SqlConstants.TICKET_DELETE_QUERY;
     }
 
     @Override
     String getInsertQuery() {
-        return INSERT_QUERY;
+        return SqlConstants.TICKET_INSERT_QUERY;
     }
 
 
@@ -51,15 +44,20 @@ public class TicketDaoImplement extends AbstractDao<Ticket> {
         try {
             logger.info("UPDATE TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setInt(++i, object.getSeanceID());
-            statement.setInt(++i, object.getUserID());
-            statement.setInt(++i, object.getAmountTickets());
-            statement.setDouble(++i, object.getCost());
-            statement.setInt(++i, object.getSeatNumber());
+            i = setTicketPreparedStatement(statement, object, i);
             statement.setInt(++i, object.getID());
         } catch (Exception e) {
             throw new MyException(e);
         }
+    }
+
+    private int setTicketPreparedStatement(PreparedStatement statement, Ticket object, int i) throws SQLException {
+        statement.setInt(++i, object.getSeanceID());
+        statement.setInt(++i, object.getUserID());
+        statement.setInt(++i, object.getAmountTickets());
+        statement.setDouble(++i, object.getCost());
+        statement.setInt(++i, object.getSeatNumber());
+        return i;
     }
 
     @Override
@@ -67,11 +65,7 @@ public class TicketDaoImplement extends AbstractDao<Ticket> {
         try {
             logger.info("INSERT TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setInt(++i, object.getSeanceID());
-            statement.setInt(++i, object.getUserID());
-            statement.setInt(++i, object.getAmountTickets());
-            statement.setDouble(++i, object.getCost());
-            statement.setInt(++i, object.getSeatNumber());
+            setTicketPreparedStatement(statement, object, i);
         } catch (Exception e) {
             throw new MyException(e);
         }

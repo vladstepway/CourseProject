@@ -1,6 +1,6 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 
 import java.util.List;
 

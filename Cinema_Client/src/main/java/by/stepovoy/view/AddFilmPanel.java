@@ -1,10 +1,10 @@
 package by.stepovoy.view;
 
 
-import by.stepovoy.FormValidator;
+import by.stepovoy.utils.FormValidator;
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.message.Message;
-import by.stepovoy.message.MessageType;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
 
 import javax.imageio.ImageIO;
@@ -27,8 +27,8 @@ public class AddFilmPanel extends JFrame {
     private JTextField countryField;
     private JTextField ageLimitField;
     private JTextField directorField;
-    private JRadioButton yesRadioButton;
-    private JRadioButton noRadioButton;
+    private JCheckBox yesCheckBox;
+    private JCheckBox noCheckBox;
     private JPanel[] panels;
     private static final String[] filmLabels = {"Название: ", "Длительность (мин): ", "Описание: ", "Год выхода: ", "Жанр: ",
             "Страна производства: ", "Режиссёр: ", "Доступен в 3D? ", "Возрастное ограничение: "};
@@ -136,7 +136,7 @@ public class AddFilmPanel extends JFrame {
             film.setDescription(descriptionField.getText());
             film.setDuration(Integer.parseInt(durationField.getText()));
             film.setDirector(directorField.getText());
-            film.setShow3D(yesRadioButton.isSelected());
+            film.setShow3D(yesCheckBox.isSelected());
             message.setMessage(film);
 
             try {
@@ -177,52 +177,56 @@ public class AddFilmPanel extends JFrame {
         JPanel is3DPanel = new JPanel();
         is3DPanel.setLayout(new FlowLayout());
         is3DPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        yesRadioButton = new JRadioButton("Да");
-        yesRadioButton.setOpaque(false);
-        yesRadioButton.addActionListener(new ActionListener() {
+        yesCheckBox = new JCheckBox("Да");
+        yesCheckBox.setOpaque(false);
+        yesCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (noRadioButton.isSelected()) {
-                    noRadioButton.setSelected(false);
+                if (noCheckBox.isSelected()) {
+                    noCheckBox.setSelected(false);
                 }
             }
         });
-        noRadioButton = new JRadioButton("Нет");
-        noRadioButton.setOpaque(false);
-        noRadioButton.setSelected(true);
-        noRadioButton.addActionListener(new ActionListener() {
+        noCheckBox = new JCheckBox("Нет");
+        noCheckBox.setOpaque(false);
+        noCheckBox.setSelected(true);
+        noCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (yesRadioButton.isSelected()) {
-                    yesRadioButton.setSelected(false);
+                if (yesCheckBox.isSelected()) {
+                    yesCheckBox.setSelected(false);
                 }
             }
         });
         is3DPanel.setOpaque(false);
-        is3DPanel.add(yesRadioButton);
+        is3DPanel.add(yesCheckBox);
         is3DPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        is3DPanel.add(noRadioButton);
+        is3DPanel.add(noCheckBox);
 
         fillWithLabels(filmLabels);
 
         panels[0].add(nameField);
         panels[0].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[1].add(durationField);
-        panels[1].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[2].add(descriptionField);
-        panels[2].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[3].add(yearField);
-        panels[3].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[4].add(genreField);
-        panels[4].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[5].add(countryField);
-        panels[5].add(Box.createRigidArea(new Dimension(15, 0)));
         panels[6].add(directorField);
         panels[6].add(Box.createRigidArea(new Dimension(15, 0)));
-        panels[7].add(is3DPanel);
-        panels[7].add(Box.createRigidArea(new Dimension(15, 0)));
+        panels[1].add(durationField);
+        panels[1].add(Box.createRigidArea(new Dimension(15, 0)));
+
+        panels[4].add(genreField);
+        panels[4].add(Box.createRigidArea(new Dimension(15, 0)));
+        panels[3].add(yearField);
+        panels[3].add(Box.createRigidArea(new Dimension(15, 0)));
+
+        panels[2].add(descriptionField);
+        panels[2].add(Box.createRigidArea(new Dimension(15, 0)));
+        panels[5].add(countryField);
+        panels[5].add(Box.createRigidArea(new Dimension(15, 0)));
+
         panels[8].add(ageLimitField);
         panels[8].add(Box.createRigidArea(new Dimension(15, 0)));
+        panels[7].add(is3DPanel);
+        panels[7].add(Box.createRigidArea(new Dimension(15, 0)));
+
     }
 
 
@@ -234,7 +238,7 @@ public class AddFilmPanel extends JFrame {
             labelLayers[i] = new JLabel(labels[i]);
             labelLayers[i].setPreferredSize(new Dimension(150, 25));
             labelLayers[i].setHorizontalAlignment(SwingConstants.LEFT);
-            labelLayers[i].setForeground(new Color(0, 0, 255));
+            labelLayers[i].setForeground(new Color(108, 68, 255));
             panels[i].setLayout(new BoxLayout(panels[i], BoxLayout.LINE_AXIS));
             panels[i].add(Box.createRigidArea(new Dimension(15, 0)));
             panels[i].add(labelLayers[i]);

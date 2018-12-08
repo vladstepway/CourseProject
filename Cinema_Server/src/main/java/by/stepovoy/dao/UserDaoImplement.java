@@ -1,24 +1,17 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
-import by.stepovoy.user.Role;
-import by.stepovoy.user.User;
+import by.stepovoy.utils.MyException;
+import by.stepovoy.model.user.Role;
+import by.stepovoy.model.user.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoImplement extends AbstractDao<User> {
-
-    private static final String TABLE_NAME = "cinema.user ";
-    private final static String SELECT_ALL_QUERY = "select * from " + TABLE_NAME;
-    private final static String INSERT_QUERY = "INSERT INTO " + TABLE_NAME +
-            " (login, password, role, surname, name, email, birthday) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private final static String DELETE_QUERY = "DELETE FROM " + TABLE_NAME + " WHERE ID = ?;";
-    private final static String UPDATE_QUERY = "UPDATE " + TABLE_NAME + " SET login = ?, password = ?, role = ?, " +
-            "surname = ?, name = ?, email = ?, birthday = ? WHERE ID = ?;";
 
     public UserDaoImplement(Connection connection) {
         super(connection);
@@ -27,22 +20,22 @@ public class UserDaoImplement extends AbstractDao<User> {
 
     @Override
     String getSelectQuery() {
-        return SELECT_ALL_QUERY;
+        return SqlConstants.USER_SELECT_ALL_QUERY;
     }
 
     @Override
     String getUpdateQuery() {
-        return UPDATE_QUERY;
+        return SqlConstants.USER_UPDATE_QUERY;
     }
 
     @Override
     String getDeleteQuery() {
-        return DELETE_QUERY;
+        return SqlConstants.USER_DELETE_QUERY;
     }
 
     @Override
     String getInsertQuery() {
-        return INSERT_QUERY;
+        return SqlConstants.USER_INSERT_QUERY;
     }
 
 
@@ -51,17 +44,22 @@ public class UserDaoImplement extends AbstractDao<User> {
         try {
             logger.info("UPDATE TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setString(++i, object.getLogin());
-            statement.setString(++i, object.getPassword());
-            statement.setString(++i, object.getRole().toString());
-            statement.setString(++i, object.getSurname());
-            statement.setString(++i, object.getName());
-            statement.setString(++i, object.getEmail());
-            statement.setDate(++i, object.getBirthdayDate());
+            i = setUserPreparedStatement(statement, object, i);
             statement.setInt(++i, object.getID());
         } catch (Exception e) {
             throw new MyException(e);
         }
+    }
+
+    private int setUserPreparedStatement(PreparedStatement statement, User object, int i) throws SQLException {
+        statement.setString(++i, object.getLogin());
+        statement.setString(++i, object.getPassword());
+        statement.setString(++i, object.getRole().toString());
+        statement.setString(++i, object.getSurname());
+        statement.setString(++i, object.getName());
+        statement.setString(++i, object.getEmail());
+        statement.setDate(++i, object.getBirthdayDate());
+        return i;
     }
 
     @Override
@@ -69,13 +67,7 @@ public class UserDaoImplement extends AbstractDao<User> {
         try {
             logger.info("INSERT TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setString(++i, object.getLogin());
-            statement.setString(++i, object.getPassword());
-            statement.setString(++i, object.getRole().toString());
-            statement.setString(++i, object.getSurname());
-            statement.setString(++i, object.getName());
-            statement.setString(++i, object.getEmail());
-            statement.setDate(++i, object.getBirthdayDate());
+            setUserPreparedStatement(statement, object, i);
         } catch (Exception e) {
             throw new MyException(e);
         }

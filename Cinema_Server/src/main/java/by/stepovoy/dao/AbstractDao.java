@@ -1,13 +1,12 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.IKey;
-import by.stepovoy.MyException;
+import by.stepovoy.utils.IKey;
+import by.stepovoy.utils.MyException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,13 +36,12 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
     public T get(int id) throws MyException {
         logger.info("GET FROM  =========== > " + this.getClass().getSimpleName());
         List<T> list = null;
-        String selectQuery = getSelectQuery() + " where id = ?";
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(getSelectQuery() + " where id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = parseResultSet(resultSet);
-            System.out.println("IN GET\n" + Arrays.toString(list.toArray()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,15 +58,12 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
 
     public List<T> getBy(String argument, String value) throws MyException {
         logger.info("GET BY FROM  =========== > " + this.getClass().getSimpleName());
-        List<T> list = null;
-
-        String selectQuery = getSelectQuery() + " WHERE " + argument + " = ?";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+        List<T> list;
+        try (PreparedStatement preparedStatement
+                     = connection.prepareStatement(getSelectQuery() + " WHERE " + argument + " = ?")) {
             preparedStatement.setString(1, value);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = parseResultSet(resultSet);
-            System.out.println("IN GET BY\n" + Arrays.toString(list.toArray()));
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -78,11 +73,9 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
     public List<T> getAll() throws MyException {
         logger.info("GET ALL FROM =========== >" + this.getClass().getSimpleName());
         List<T> list;
-        String selectQuery = getSelectQuery();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(getSelectQuery())) {
             ResultSet resultSet = preparedStatement.executeQuery();
             list = parseResultSet(resultSet);
-            System.out.println("IN GET ALL\n" + Arrays.toString(list.toArray()));
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -91,13 +84,9 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
 
     public void update(T object) throws MyException {
         logger.info("UPDATE IN  =========== > " + this.getClass().getSimpleName());
-        String updateQuery = getUpdateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
             prepareUpdateStatement(statement, object);
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new MyException("There are more than 1 record on update :" + count);
-            }
+            statement.executeUpdate();
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -108,10 +97,7 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
         String deleteQuery = getDeleteQuery();
         try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setInt(1, object.getID());
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new MyException("There are more than 1 record on delete :" + count);
-            }
+            statement.executeUpdate();
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -122,15 +108,10 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
         if (object.getID() != 0) {
             throw new MyException("Object is already save.");
         }
-        System.out.println("AFTER SAVE ENTERING\n" + object);
         String createQuery = getInsertQuery();
         try (PreparedStatement preparedStatement = connection.prepareStatement(createQuery)) {
             prepareInsertStatement(preparedStatement, object);
-            System.out.println("AFTER TRY\n" + object.toString());
-            int count = preparedStatement.executeUpdate();
-            if (count != 1) {
-                throw new MyException("There are more than 1 record on saving :" + count);
-            }
+            preparedStatement.executeUpdate();
         } catch (Exception e) {
             throw new MyException(e);
         }
@@ -138,11 +119,6 @@ public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(createQuery)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<T> list = parseResultSet(resultSet);
-            System.out.println("IN GET\n" + Arrays.toString(list.toArray()));
-            if (list.size() != 1) {
-                throw new MyException("Cannot find new data");
-            }
-            System.out.println(list.iterator().next());
             return list.iterator().next();
         } catch (Exception e) {
             throw new MyException(e);

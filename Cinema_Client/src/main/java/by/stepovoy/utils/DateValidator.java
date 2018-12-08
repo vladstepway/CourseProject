@@ -1,4 +1,4 @@
-package by.stepovoy.view;
+package by.stepovoy.utils;
 
 import javax.swing.*;
 import java.text.ParseException;
@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class DateFormatter extends JFormattedTextField.AbstractFormatter {
+public class DateValidator extends JFormattedTextField.AbstractFormatter {
 
     private String pattern = "yyyy-MM-dd";
     private SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.ENGLISH);

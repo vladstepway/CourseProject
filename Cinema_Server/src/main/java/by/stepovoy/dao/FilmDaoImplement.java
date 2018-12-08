@@ -1,49 +1,40 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.MyException;
+import by.stepovoy.utils.MyException;
 import by.stepovoy.model.Film;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FilmDaoImplement extends AbstractDao<Film> {
-    private final static String TABLE_NAME = " cinema.film ";
-    private final static String SELECT_ALL_QUERY = "select * from " + TABLE_NAME;
-    private final static String INSERT_QUERY = "INSERT INTO " + TABLE_NAME +
-            " (name, duration, description, genre, country, director, is3D, ageLimit, yearProduction) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private final static String DELETE_QUERY = "delete from " + TABLE_NAME +
-            " where ID = ?;";
-    private final static String UPDATE_QUERY = "update " + TABLE_NAME +
-            " set name = ?, duration = ?, description = ?, genre = ?," +
-            " country = ?, director = ?, is3D = ?, ageLimit = ?, yearProduction = ? WHERE ID = ?;";
+
 
     public FilmDaoImplement(Connection connection) {
         super(connection);
     }
 
-
     @Override
     String getSelectQuery() {
-        return SELECT_ALL_QUERY;
+        return SqlConstants.FILM_SELECT_ALL_QUERY;
     }
 
     @Override
     String getUpdateQuery() {
-        return UPDATE_QUERY;
+        return SqlConstants.FILM_UPDATE_QUERY;
     }
 
     @Override
     String getDeleteQuery() {
-        return DELETE_QUERY;
+        return SqlConstants.FILM_DELETE_QUERY;
     }
 
     @Override
     String getInsertQuery() {
-        return INSERT_QUERY;
+        return SqlConstants.FILM_INSERT_QUERY;
     }
 
     @Override
@@ -51,19 +42,24 @@ public class FilmDaoImplement extends AbstractDao<Film> {
         try {
             logger.info("UPDATE TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setString(++i, object.getName());
-            statement.setInt(++i, object.getDuration());
-            statement.setString(++i, object.getDescription());
-            statement.setString(++i, object.getGenre());
-            statement.setString(++i, object.getCountry());
-            statement.setString(++i, object.getDirector());
-            statement.setBoolean(++i, object.isShow3D());
-            statement.setInt(++i, object.getAgeLimit());
-            statement.setInt(++i, object.getYearProduction());
+            i = setFilmPreparedStatement(statement, object, i);
             statement.setInt(++i, object.getID());
         } catch (Exception e) {
             throw new MyException(e);
         }
+    }
+
+    private int setFilmPreparedStatement(PreparedStatement statement, Film object, int i) throws SQLException {
+        statement.setString(++i, object.getName());
+        statement.setInt(++i, object.getDuration());
+        statement.setString(++i, object.getDescription());
+        statement.setString(++i, object.getGenre());
+        statement.setString(++i, object.getCountry());
+        statement.setString(++i, object.getDirector());
+        statement.setBoolean(++i, object.isShow3D());
+        statement.setInt(++i, object.getAgeLimit());
+        statement.setInt(++i, object.getYearProduction());
+        return i;
     }
 
     @Override
@@ -71,15 +67,7 @@ public class FilmDaoImplement extends AbstractDao<Film> {
         try {
             logger.info("INSERT TO  =========== >  " + this.getClass().getSimpleName());
             int i = 0;
-            statement.setString(++i, object.getName());
-            statement.setInt(++i, object.getDuration());
-            statement.setString(++i, object.getDescription());
-            statement.setString(++i, object.getGenre());
-            statement.setString(++i, object.getCountry());
-            statement.setString(++i, object.getDirector());
-            statement.setBoolean(++i, object.isShow3D());
-            statement.setInt(++i, object.getAgeLimit());
-            statement.setInt(++i, object.getYearProduction());
+            setFilmPreparedStatement(statement, object, i);
         } catch (Exception e) {
             throw new MyException(e);
         }

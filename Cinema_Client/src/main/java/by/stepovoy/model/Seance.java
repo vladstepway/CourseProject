@@ -1,6 +1,6 @@
 package by.stepovoy.model;
 
-import by.stepovoy.IKey;
+import by.stepovoy.utils.IKey;
 
 import java.io.Serializable;
 import java.sql.Time;

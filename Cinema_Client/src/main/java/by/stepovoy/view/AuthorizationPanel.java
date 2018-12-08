@@ -1,9 +1,9 @@
 package by.stepovoy.view;
 
-import by.stepovoy.FormValidator;
+import by.stepovoy.utils.FormValidator;
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.message.MessageType;
-import by.stepovoy.user.User;
+import by.stepovoy.utils.MessageType;
+import by.stepovoy.model.user.User;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -183,7 +183,8 @@ public class AuthorizationPanel extends JFrame {
             User user = new User();
             user.setLogin(loginField.getText());
             user.setPassword(String.valueOf(passwordField.getPassword()));
-            ClientThread clientThread = new ClientThread(MessageType.SIGN, MessageType.IN, user, parentFrame, this, port, loginField, passwordField);
+            ClientThread clientThread = new ClientThread(MessageType.SIGN, MessageType.IN, user, parentFrame,
+                    this, port, loginField, passwordField);
             clientThread.start();
         } else {
             loginField.setBorder(BorderFactory.createLineBorder(Color.RED));
