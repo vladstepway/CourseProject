@@ -1,8 +1,8 @@
 package by.stepovoy.dao;
 
 import by.stepovoy.utils.MyException;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.utils.IKey;
+import by.stepovoy.model.IKey;
 import by.stepovoy.utils.MyException;
 
 import java.sql.Connection;

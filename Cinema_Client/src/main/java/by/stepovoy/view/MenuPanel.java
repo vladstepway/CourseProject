@@ -1,7 +1,7 @@
 package by.stepovoy.view;
 
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.imageio.ImageIO;
@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class MenuPanel extends JFrame {
     private JPanel background;
@@ -122,12 +123,16 @@ public class MenuPanel extends JFrame {
             mainPanel.add(showStatisticsButton);
             mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-            JButton getReportButton = new JButton("Сохранить отчёт в PDF файл");
+            JButton getReportButton = new JButton("Сохранить отчёт в txt файл");
             getReportButton.setPreferredSize(new Dimension(250, 25));
             getReportButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    getReportActionPerformed(e);
+                    try {
+                        getReportActionPerformed(e);
+                    } catch (IOException | ClassNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             });
             mainPanel.add(getReportButton);
@@ -202,57 +207,10 @@ public class MenuPanel extends JFrame {
     }
 
     @SuppressFBWarnings("DM_DEFAULT_ENCODING")
-    private void getReportActionPerformed(ActionEvent e) {
+    private void getReportActionPerformed(ActionEvent e) throws IOException, ClassNotFoundException {
 
-//        List<Ticket> ticketList = null;
-//        try {
-//            ticketList = ClientThread.getAllTickets();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        int totalTickets = 0;
-//        if (ticketList != null) {
-//            totalTickets = ticketList.size();
-//        }
-//        int totalTicketsCount = 0;
-//        int totalPrice = 0;
-//        int movieCount = 0;
-//        if (ticketList != null) {
-//            for (Ticket ticket : ticketList) {
-//                Message message = new Message();
-//                message.setOperationType(MessageType.GET);
-//                message.setMessageType(MessageType.SEANCE);
-//                message.setMessage(ticket.getSeanceID());
-//                Seance seance = null;
-//                try {
-//                    ClientThread.sendMessage(message);
-//                    seance = (Seance) ClientThread.receiveMessage().getMessage();
-//                } catch (Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//                totalTicketsCount += ticket.getAmountTickets();
-//                totalPrice += ticket.getCost();
-//                movieCount++;
-//            }
-//        }
-//
-//        PrintWriter writer = null;
-//        try {
-//            writer = new PrintWriter("report.txt");
-//        } catch (FileNotFoundException ex) {
-//            ex.printStackTrace();
-//        }
-//        if (writer != null) {
-//            writer.write("C помощью нашего приложени было оформлено " + totalTickets + " заказов " +
-//                    "на " + totalTicketsCount + " билетов на общую сумму " + totalPrice + " BYN" +
-//                    "\r\nСреди которых:\r\n" +
-//                    "\t" + movieCount + " - на кино\r\n"
-//
-//            );
-//        }
-//        if (writer != null) {
-//            writer.close();
-//
+        ReportGeneratorPanel reportGeneratorPanel = new ReportGeneratorPanel();
+        reportGeneratorPanel.setVisible(true);
 
     }
 }

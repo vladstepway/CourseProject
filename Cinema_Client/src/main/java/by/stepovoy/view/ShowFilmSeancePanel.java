@@ -6,8 +6,8 @@ import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.imageio.ImageIO;
@@ -305,7 +305,6 @@ public class ShowFilmSeancePanel extends JFrame {
                 message.setMessage(session.getHallID());
                 ClientThread.sendMessage(message);
                 message = ClientThread.receiveMessage();
-                System.out.println("MESSAGE HERE\n" + message);
                 Hall hall = (Hall) message.getMessage();
                 Object[] data = {
                         session.getID(), hall.getName(), hall.getFloor(),

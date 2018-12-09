@@ -6,13 +6,14 @@ import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class BuyTicketPanel extends JDialog {
@@ -134,6 +135,13 @@ public class BuyTicketPanel extends JDialog {
         ticket.setUserID(user.getID());
         ticket.setAmountTickets(totalTickets);
         ticket.setCost(totalCost);
+        Date currentDate = new Date();
+        if (seance.getSeanceTime().after(currentDate) &&
+                seance.getSeanceTime().equals(currentDate)) {
+            ticket.setValid(true);
+        } else {
+            ticket.setValid(false);
+        }
         Message message = new Message();
         message.setOperationType(MessageType.ADD);
         message.setMessageType(MessageType.TICKET);

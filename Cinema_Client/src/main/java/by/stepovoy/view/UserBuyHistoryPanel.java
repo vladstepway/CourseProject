@@ -4,7 +4,7 @@ import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.*;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -97,10 +97,7 @@ public class UserBuyHistoryPanel extends JFrame {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                String type = "Кино";
-                System.out.println("EVENT NAME "+eventName);
                 Object[] data = {
-//                        eventName, type, hall != null ? hall.getName() : null, seance != null ?
                         eventName, hall != null ? hall.getName() : null, seance != null ?
                         seance.getSeanceDate() : null,
                         seance != null ? seance.getSeanceTime() : null, ticket.getAmountTickets(), ticket.getCost()

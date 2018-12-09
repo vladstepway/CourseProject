@@ -1,7 +1,5 @@
 package by.stepovoy.model;
 
-import by.stepovoy.utils.IKey;
-
 import java.io.Serializable;
 
 public class Hall implements IKey, Serializable {

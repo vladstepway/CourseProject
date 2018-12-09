@@ -1,8 +1,10 @@
 package by.stepovoy.model;
 
-import by.stepovoy.utils.IKey;
+import by.stepovoy.client.ClientThread;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 public class Ticket implements IKey, Serializable {
 
@@ -12,6 +14,7 @@ public class Ticket implements IKey, Serializable {
     private int seatNumber;
     private int amountTickets;
     private double cost;
+    private boolean isValid;
 
     @Override
     public int getID() {
@@ -62,6 +65,14 @@ public class Ticket implements IKey, Serializable {
         this.seatNumber = seatNumber;
     }
 
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,7 +85,8 @@ public class Ticket implements IKey, Serializable {
         if (getUserID() != ticket.getUserID()) return false;
         if (getSeatNumber() != ticket.getSeatNumber()) return false;
         if (getAmountTickets() != ticket.getAmountTickets()) return false;
-        return Double.compare(ticket.getCost(), getCost()) == 0;
+        if (Double.compare(ticket.getCost(), getCost()) != 0) return false;
+        return isValid() == ticket.isValid();
     }
 
     @Override
@@ -88,6 +100,7 @@ public class Ticket implements IKey, Serializable {
         result = 31 * result + getAmountTickets();
         temp = Double.doubleToLongBits(getCost());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (isValid() ? 1 : 0);
         return result;
     }
 

@@ -7,7 +7,7 @@ import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -111,7 +111,6 @@ public class TotalBuyHistoryPanel extends JFrame {
 
                 Object[] data = {
                         user != null ? user.getLogin() : null, filmName, hall != null ?
-//                        user != null ? user.getLogin() : null, filmName, type, institution != null ?
                         hall.getName()
                         : null, seance != null ? seance.getSeanceDate() : null, seance != null ?
                         seance.getSeanceTime() : null, ticket.getAmountTickets(), ticket.getCost()

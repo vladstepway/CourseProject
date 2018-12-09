@@ -1,4 +1,4 @@
-package by.stepovoy.model.user;
+package by.stepovoy.model;
 
 public enum Role {
     USER("User"), MODER("Moder"), ADMIN("Admin");

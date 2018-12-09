@@ -30,11 +30,11 @@ final class SqlConstants {
 
     final static String TICKET_SELECT_ALL_QUERY = "select * from cinema.ticket";
     final static String TICKET_INSERT_QUERY = "INSERT INTO cinema.ticket" +
-            " (seanceID, userID, amount, cost, seatNumber) " +
-            "VALUES (?, ?, ?, ?, ?);";
+            " (seanceID, userID, amount, cost, seatNumber, valid) " +
+            "VALUES (?, ?, ?, ?, ?, ?);";
     final static String TICKET_DELETE_QUERY = "DELETE FROM cinema.ticket WHERE ID = ?;";
     final static String TICKET_UPDATE_QUERY = "UPDATE cinema.ticket SET seanceID = ?," +
-            " userID = ?, amount = ?, cost = ?, seatNumber = ? WHERE ID = ?;";
+            " userID = ?, amount = ?, cost = ?, seatNumber = ?, valid = ? WHERE ID = ?;";
 
     final static String USER_SELECT_ALL_QUERY = "select * from cinema.user";
     final static String USER_INSERT_QUERY = "INSERT INTO cinema.user" +

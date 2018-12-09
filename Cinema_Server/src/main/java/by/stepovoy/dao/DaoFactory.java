@@ -4,7 +4,7 @@ import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 import by.stepovoy.utils.MyException;
 
 import java.io.FileInputStream;
@@ -60,7 +60,7 @@ public class DaoFactory implements IDaoFactory {
         for (final Class someClass : classes) {
             creators.put(someClass, new IDaoCreator() {
                 @Override
-                public IGenericDao createDao(Object o) throws MyException {
+                public IGenericDao createDao(Object object) throws MyException {
                     try {
                         Class<?> daoClass = Class.forName("by.stepovoy.dao." + someClass.getSimpleName() + "DaoImplement");
                         Constructor<?> constructor = daoClass.getConstructor(Connection.class);

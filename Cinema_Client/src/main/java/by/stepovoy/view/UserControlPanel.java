@@ -3,8 +3,8 @@ package by.stepovoy.view;
 import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

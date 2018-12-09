@@ -4,7 +4,7 @@ import by.stepovoy.model.Hall;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import java.io.Serializable;
 import java.util.List;

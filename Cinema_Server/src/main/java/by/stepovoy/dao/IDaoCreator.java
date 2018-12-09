@@ -2,6 +2,6 @@ package by.stepovoy.dao;
 
 import by.stepovoy.utils.MyException;
 
-public interface IDaoCreator<Context> {
-    IGenericDao createDao(Context context) throws MyException;
+public interface IDaoCreator {
+    IGenericDao createDao(Object object) throws MyException;
 }

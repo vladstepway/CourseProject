@@ -6,7 +6,7 @@ import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 import by.stepovoy.view.MenuPanel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -15,8 +15,8 @@ import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientThread extends Thread {
 
@@ -77,7 +77,6 @@ public class ClientThread extends Thread {
                                 menuPanel.setLocationRelativeTo(null);
                                 menuPanel.setVisible(true);
                             } else {
-//                                System.out.println(incomingMsg.getMessageType());
                                 JOptionPane.showMessageDialog(parentFrame,
                                         "Введённый логин уже зарегистрирован. Пожалуйста, выберите другой.",
                                         "Ошибка регистрации",
@@ -178,14 +177,15 @@ public class ClientThread extends Thread {
         objectOutput.flush();
         message = (Message) objectInput.readObject();
         List<Seance> seanceList = message.getSeanceList();
-        List<Seance> resultList = new ArrayList<>();
-        for (Seance seance : seanceList) {
-            System.out.println(seance);
-            if (seance.getFilmID() == film.getID()) {
-                resultList.add(seance);
-            }
-        }
-        return resultList;
+//        List<Seance> resultList = new ArrayList<>();
+
+        return seanceList.stream().filter(s -> s.getFilmID() == film.getID()).collect(Collectors.toList());
+//        for (Seance seance : seanceList) {
+//            if (seance.getFilmID() == film.getID()) {
+//                resultList.add(seance);
+//            }
+//        }
+//        return resultList;
     }
 
     public static List<Hall> getAllHalls() throws IOException, ClassNotFoundException {
@@ -196,7 +196,6 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         objectOutput.flush();
         message = (Message) objectInput.readObject();
-        System.out.println(message.getMessage().toString());
         return message.getHallList();
     }
 

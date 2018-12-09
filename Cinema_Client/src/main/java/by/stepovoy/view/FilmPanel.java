@@ -5,8 +5,8 @@ import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.imageio.ImageIO;
@@ -70,7 +70,7 @@ public class FilmPanel extends JFrame {
         filmTable.setRowSorter(sorter);
         filmTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(filmTable);
-        jScrollPane.setPreferredSize(new Dimension(1000, 700));
+        jScrollPane.setPreferredSize(new Dimension(1000, 500));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
         filmTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -154,7 +154,7 @@ public class FilmPanel extends JFrame {
         });
 
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         if (user.getRole() != Role.USER) {
             JButton addButton = new JButton("Добавить");
             addButton.setPreferredSize(new Dimension(150, 25));
@@ -175,7 +175,7 @@ public class FilmPanel extends JFrame {
                     editActionPerformed(e);
                 }
             });
-            buttonsPanel.add(editButton);
+            //  buttonsPanel.add(editButton);
             buttonsPanel.add(Box.createRigidArea(new Dimension(30, 0)));
             deleteButton = new JButton("Удалить");
             deleteButton.setPreferredSize(new Dimension(150, 25));
@@ -322,7 +322,7 @@ public class FilmPanel extends JFrame {
     }
 
     private void fillTable() {
-        String query = searchField.getText().toLowerCase();
+        final String query = searchField.getText().toLowerCase();
         ArrayList<Film> foundList = new ArrayList<Film>();
         if (query.length() != 0) {
             for (Film film : films) {
