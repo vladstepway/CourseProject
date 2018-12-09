@@ -27,8 +27,8 @@ public class UpdateFilmPanel extends JFrame {
     private JTextField ageLimitField;
     private JTextField yearField;
     private JTextField directorField;
-    private JRadioButton yesRadioButton;
-    private JRadioButton noRadioButton;
+    private JCheckBox yesCheckBox;
+    private JCheckBox noCheckBox;
     private JPanel[] panels;
     private static final String[] filmLabels = {"Название: ", "Длительность (мин): ",
             "Описание: ", "Год выхода: ", "Жанр: ", "Страна производства: ",
@@ -44,7 +44,7 @@ public class UpdateFilmPanel extends JFrame {
             public void windowClosing(WindowEvent e) {
                 int reply = JOptionPane.showConfirmDialog(background,
                         "Вы действительно хотите выйти из программы?",
-                        "Изменение роли",
+                        "Выход",
                         JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     System.exit(0);
@@ -114,7 +114,7 @@ public class UpdateFilmPanel extends JFrame {
         buttonsPanel.add(Box.createRigidArea(new Dimension(50, 0)));
         buttonsPanel.add(acceptButton);
         buttonsPanel.add(cancelButton);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+//        buttonsPanel.add(Box.createRigidArea(new Dimension(50, 0)));
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         mainPanel.setAlignmentX(SwingConstants.CENTER);
         mainPanel.add(buttonsPanel);
@@ -148,9 +148,10 @@ public class UpdateFilmPanel extends JFrame {
             film.setCountry(countryField.getText());
             film.setGenre(genreField.getText());
             film.setDescription(descriptionField.getText());
-            film.setDuration(Integer.parseInt(durationField.getText()));
             film.setDirector(directorField.getText());
-            film.setShow3D(yesRadioButton.isSelected());
+            film.setShow3D(yesCheckBox.isSelected());
+            film.setDuration(Integer.parseInt(durationField.getText()));
+
             message.setMessage(film);
 
             try {
@@ -200,35 +201,35 @@ public class UpdateFilmPanel extends JFrame {
         JPanel is3DPanel = new JPanel();
         is3DPanel.setLayout(new FlowLayout());
         is3DPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        yesRadioButton = new JRadioButton("да");
-        yesRadioButton.setOpaque(false);
-        yesRadioButton.addActionListener(new ActionListener() {
+        yesCheckBox = new JCheckBox("да");
+        yesCheckBox.setOpaque(false);
+        yesCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (noRadioButton.isSelected()) {
-                    noRadioButton.setSelected(false);
+                if (noCheckBox.isSelected()) {
+                    noCheckBox.setSelected(false);
                 }
             }
         });
-        noRadioButton = new JRadioButton("нет");
-        noRadioButton.setOpaque(false);
-        noRadioButton.setSelected(true);
-        noRadioButton.addActionListener(new ActionListener() {
+        noCheckBox = new JCheckBox("нет");
+        noCheckBox.setOpaque(false);
+        noCheckBox.setSelected(true);
+        noCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (yesRadioButton.isSelected()) {
-                    yesRadioButton.setSelected(false);
+                if (yesCheckBox.isSelected()) {
+                    yesCheckBox.setSelected(false);
                 }
             }
         });
         if (((Film) film).isShow3D()) {
-            yesRadioButton.setSelected(true);
-            noRadioButton.setSelected(false);
+            yesCheckBox.setSelected(true);
+            noCheckBox.setSelected(false);
         }
         is3DPanel.setOpaque(false);
-        is3DPanel.add(yesRadioButton);
+        is3DPanel.add(yesCheckBox);
         is3DPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        is3DPanel.add(noRadioButton);
+        is3DPanel.add(noCheckBox);
 
         fillPanelsWith(filmLabels);
         panels[0].add(nameField);

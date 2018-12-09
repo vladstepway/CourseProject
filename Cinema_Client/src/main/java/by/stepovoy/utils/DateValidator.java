@@ -16,9 +16,10 @@ public class DateValidator extends JFormattedTextField.AbstractFormatter {
         return formatter.parseObject(text);
     }
 
+    @Override
     public String valueToString(Object value) {
         if (value != null) {
-            Calendar calendar = (Calendar)value;
+            Calendar calendar = (Calendar) value;
             return formatter.format(calendar.getTime());
         }
         return "";

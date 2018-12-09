@@ -27,7 +27,7 @@ public class UserBuyHistoryPanel extends JFrame {
         this.parentFrame = parentFrame;
         setLocationRelativeTo(null);
         parentFrame.setVisible(false);
-        setTitle("Просмотр истории покупок " + user.getName());
+        setTitle("Просмотр истории покупок " + user.getLogin());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -41,7 +41,7 @@ public class UserBuyHistoryPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 1000, 700);
+        setBounds(400, 200, 800, 400);
         setResizable(false);
         List<Ticket> ticketList = null;
         try {
@@ -52,7 +52,7 @@ public class UserBuyHistoryPanel extends JFrame {
 
         DefaultTableModel tableModel = new DefaultTableModel();
         String[] columnNames = {"Фильм", "Зал", "Дата",
-                "Время", "Кол-во билетов", "Сумма заказа (BYN)"};
+                "Время","Место", "Кол-во билетов", "Сумма заказа (BYN)", "Действительность"};
         tableModel.setColumnIdentifiers(columnNames);
         if (ticketList != null) {
             for (Ticket ticket : ticketList) {
@@ -75,11 +75,11 @@ public class UserBuyHistoryPanel extends JFrame {
                 if (seance != null) {
                     message.setMessage(seance.getFilmID());
                 }
-                String eventName = null;
+                String filmName = null;
                 try {
                     ClientThread.sendMessage(message);
                     if (message.getMessageType() == MessageType.FILM) {
-                        eventName = ((Film) ClientThread.receiveMessage().getMessage()).getName();
+                        filmName = ((Film) ClientThread.receiveMessage().getMessage()).getName();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -98,9 +98,9 @@ public class UserBuyHistoryPanel extends JFrame {
                     e.printStackTrace();
                 }
                 Object[] data = {
-                        eventName, hall != null ? hall.getName() : null, seance != null ?
+                        filmName, hall != null ? hall.getName() : null, seance != null ?
                         seance.getSeanceDate() : null,
-                        seance != null ? seance.getSeanceTime() : null, ticket.getAmountTickets(), ticket.getCost()
+                        seance != null ? seance.getSeanceTime() : null, ticket.getSeatNumber(), ticket.getAmountTickets(), ticket.getCost(), ticket.isValid()
                 };
                 tableModel.addRow(data);
             }

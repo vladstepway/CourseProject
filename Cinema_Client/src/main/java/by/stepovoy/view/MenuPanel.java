@@ -30,7 +30,7 @@ public class MenuPanel extends JFrame {
             }
         });
         MenuPanel.parentFrame = parentFrame;
-        setTitle(" Меню " + user.getName());
+        setTitle(" Меню " + user.getLogin());
 
         setBounds(700, 250, 500, 500);
         setResizable(false);

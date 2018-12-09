@@ -25,8 +25,8 @@ final class SqlConstants {
             " (hallID, filmID, seanceTime, seanceDate, ticketCost, ticketsLeft)" +
             "VALUES (?, ?, ?, ?, ?, ?);";
     final static String SEANCE_DELETE_QUERY = "DELETE FROM cinema.seance WHERE ID = ?;";
-    final static String SEANCE_UPDATE_QUERY = "UPDATE cinema.seance SET sessionTime = ?," +
-            " sessionDate = ?, ticketCost = ?, ticketsLeft = ? WHERE ID = ?;";
+    final static String SEANCE_UPDATE_QUERY = "UPDATE cinema.seance SET seanceTime = ?," +
+            " seanceDate = ?, ticketCost = ?, ticketsLeft = ? WHERE ID = ?;";
 
     final static String TICKET_SELECT_ALL_QUERY = "select * from cinema.ticket";
     final static String TICKET_INSERT_QUERY = "INSERT INTO cinema.ticket" +

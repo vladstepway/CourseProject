@@ -47,7 +47,7 @@ public class ServerThread extends Thread {
 
             daoFactory = new DaoFactory();
             IGenericDao dao = null;
-            Message request ;
+            Message request;
             Message answer = null;
             User user;
             MessageType operationType;
@@ -166,8 +166,8 @@ public class ServerThread extends Thread {
                         id = (Integer) request.getMessage();
                         dao.delete(dao.get(id));
                         break;
-                    case EDIT:
-                        LOGGER.info("********* EDIT operation *********");
+                    case UPDATE:
+                        LOGGER.info("********* UPDATE operation *********");
                         switch (messageType) {
                             case USER:
                                 LOGGER.info("********* USER *********");

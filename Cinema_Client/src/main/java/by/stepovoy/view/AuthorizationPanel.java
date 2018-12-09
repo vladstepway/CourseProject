@@ -32,7 +32,7 @@ public class AuthorizationPanel extends JFrame {
             public void windowClosing(WindowEvent e) {
                 int reply = JOptionPane.showConfirmDialog(background,
                         "Вы действительно хотите выйти из программы?",
-                        "Изменение роли",
+                        "Выход",
                         JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
                     System.exit(0);

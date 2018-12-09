@@ -52,7 +52,7 @@ public class FilmPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 1000, 700);
+        setBounds(400, 200, 900, 600);
         setResizable(false);
         this.user = user;
         films = new ArrayList<>();
@@ -70,7 +70,7 @@ public class FilmPanel extends JFrame {
         filmTable.setRowSorter(sorter);
         filmTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(filmTable);
-        jScrollPane.setPreferredSize(new Dimension(1000, 500));
+        jScrollPane.setPreferredSize(new Dimension(900, 400));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
         filmTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -126,10 +126,11 @@ public class FilmPanel extends JFrame {
             }
         });
         searchButton.setPreferredSize(new Dimension(25, 25));
-        JPanel checkBoxPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout());
 
-        checkBoxPanel.add(searchField);
-        checkBoxPanel.add(searchButton);
+        buttonsPanel.add(searchField);
+        buttonsPanel.add(searchButton);
 
         showButton = new JButton("Просмотреть");
         showButton.setPreferredSize(new Dimension(150, 25));
@@ -153,8 +154,6 @@ public class FilmPanel extends JFrame {
             }
         });
 
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         if (user.getRole() != Role.USER) {
             JButton addButton = new JButton("Добавить");
             addButton.setPreferredSize(new Dimension(150, 25));
@@ -175,7 +174,7 @@ public class FilmPanel extends JFrame {
                     editActionPerformed(e);
                 }
             });
-            //  buttonsPanel.add(editButton);
+            buttonsPanel.add(editButton);
             buttonsPanel.add(Box.createRigidArea(new Dimension(30, 0)));
             deleteButton = new JButton("Удалить");
             deleteButton.setPreferredSize(new Dimension(150, 25));
@@ -195,9 +194,9 @@ public class FilmPanel extends JFrame {
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(checkBoxPanel);
-        mainPanel.add(jScrollPane);
         mainPanel.add(buttonsPanel);
+        mainPanel.add(jScrollPane);
+//        mainPanel.add(buttonsPanel);
 
         setContentPane(mainPanel);
 
@@ -236,9 +235,9 @@ public class FilmPanel extends JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            ShowFilmSeancePanel window = null;
+            SeancePanel window = null;
             if (film != null) {
-                window = new ShowFilmSeancePanel(this, film, user);
+                window = new SeancePanel(this, film, user);
 
             }
             if (window != null) {
@@ -286,7 +285,7 @@ public class FilmPanel extends JFrame {
     public void deleteActionPerformed(ActionEvent e) {
         int reply = JOptionPane.showConfirmDialog(this,
                 "Вы действительно хотите удалить \"" + filmTable.getValueAt(selectedRow, 2) + "\"?",
-                "Удаление мероприятия",
+                "Удаление фильм",
                 JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             int selectedID = Integer.valueOf(String.valueOf(filmTable.getValueAt(selectedRow, 0)));

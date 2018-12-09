@@ -56,7 +56,7 @@ public class TicketDaoImplement extends AbstractDao<Ticket> {
         statement.setInt(++i, object.getUserID());
         statement.setInt(++i, object.getAmountTickets());
         statement.setDouble(++i, object.getCost());
-        statement.setInt(++i, object.getSeatNumber());
+        statement.setString(++i, object.getSeatNumber());
         statement.setBoolean(++i, object.isValid());
         return i;
     }
@@ -84,7 +84,7 @@ public class TicketDaoImplement extends AbstractDao<Ticket> {
                 ticket.setUserID(resultSet.getInt("userID"));
                 ticket.setAmountTickets(resultSet.getInt("amount"));
                 ticket.setCost(resultSet.getDouble("cost"));
-                ticket.setSeatNumber(resultSet.getInt("seatNumber"));
+                ticket.setSeatNumber(resultSet.getString("seatNumber"));
                 ticket.setValid(resultSet.getBoolean("valid"));
                 result.add(ticket);
             }

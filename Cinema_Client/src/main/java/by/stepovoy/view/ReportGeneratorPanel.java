@@ -4,8 +4,6 @@ import by.stepovoy.client.ClientThread;
 import by.stepovoy.model.Film;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.utils.Message;
-import by.stepovoy.utils.MessageType;
 import org.joda.time.DateTime;
 
 import javax.swing.*;
