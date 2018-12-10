@@ -7,7 +7,7 @@ import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -43,7 +43,7 @@ public class TotalBuyHistoryPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 1000, 700);
+        setBounds(400, 200, 1000, 400);
         setResizable(false);
         List<Ticket> ticketList = null;
         try {
@@ -54,7 +54,7 @@ public class TotalBuyHistoryPanel extends JFrame {
 
         DefaultTableModel tableModel = new DefaultTableModel();
         String[] columnNames = {"Пользователь", "Фильм", "Зал",
-                "Дата", "Время", "Кол-во билетов", "Сумма заказа (BYN)"};
+                "Дата", "Время","Место", "Кол-во билетов", "Сумма заказа (BYN)","Действительность"};
         tableModel.setColumnIdentifiers(columnNames);
         if (ticketList != null) {
             for (Ticket ticket : ticketList) {
@@ -111,10 +111,9 @@ public class TotalBuyHistoryPanel extends JFrame {
 
                 Object[] data = {
                         user != null ? user.getLogin() : null, filmName, hall != null ?
-//                        user != null ? user.getLogin() : null, filmName, type, institution != null ?
                         hall.getName()
                         : null, seance != null ? seance.getSeanceDate() : null, seance != null ?
-                        seance.getSeanceTime() : null, ticket.getAmountTickets(), ticket.getCost()
+                        seance.getSeanceTime() : null,ticket.getSeatNumber(), ticket.getAmountTickets(), ticket.getCost(),ticket.isValid()
                 };
                 tableModel.addRow(data);
             }
@@ -124,7 +123,7 @@ public class TotalBuyHistoryPanel extends JFrame {
         table.setRowSorter(sorter);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(table);
-        jScrollPane.setPreferredSize(new Dimension(1000, 700));
+        jScrollPane.setPreferredSize(new Dimension(1000, 400));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
         mainPanel = new JPanel() {

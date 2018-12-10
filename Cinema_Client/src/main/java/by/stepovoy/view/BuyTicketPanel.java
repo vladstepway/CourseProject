@@ -2,17 +2,23 @@ package by.stepovoy.view;
 
 
 import by.stepovoy.client.ClientThread;
+import by.stepovoy.utils.DateValidator;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class BuyTicketPanel extends JDialog {
@@ -24,9 +30,9 @@ public class BuyTicketPanel extends JDialog {
     private JButton buyButton;
     private double totalCost;
     private int totalTickets;
-    private String ticketNumber = null;
+    private String ticketNumber = "";
 
-    public BuyTicketPanel(JFrame parentFrame, User user, final Seance seance, boolean isModal) {
+    public BuyTicketPanel(JFrame parentFrame, User user, final Seance seance, boolean isModal) throws IOException, ClassNotFoundException {
         super(parentFrame, isModal);
         setLocationRelativeTo(null);
         this.user = user;
@@ -39,11 +45,28 @@ public class BuyTicketPanel extends JDialog {
         setContentPane(mainPanel);
 
         setTitle("Покупка билетов");
+        List<String> numbersList = new LinkedList<>();
+        String delimiter = ", ";
+        String[] seats;
+        String str = "";
+        List<Ticket> ticketList = ClientThread.getAllTickets();
+        for (Ticket ticket : ticketList) {
+            if (ticket.getSeanceID() == seance.getID()) {
+                str = ticket.getSeatNumber();
+            }
+        }
+        seats = str.split(delimiter);
+        List<String> soldTickets = new LinkedList<>(Arrays.asList(seats));
 
         ArrayList<JToggleButton> buttonList = new ArrayList<>();
-        for (int i = 0; i < seance.getTicketsLeft(); i++) {
-            buttonList.add(new JToggleButton("" + (i + 1)));
-            mainPanel.add(buttonList.get(i));
+        for (String string : soldTickets) {
+            for (int i = 0; i < 40; i++) {
+                buttonList.add(new JToggleButton("" + (i + 1)));
+                mainPanel.add(buttonList.get(i));
+                if (string.equals(buttonList.get(i).getText())) {
+                    buttonList.get(i).setEnabled(false);
+                }
+            }
         }
 
         cost = new JLabel("Общая стоимость: 0 BYN");
@@ -59,8 +82,10 @@ public class BuyTicketPanel extends JDialog {
 
         for (final JToggleButton button : buttonList) {
             button.addActionListener(new ActionListener() {
+
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
                     if (e.getSource() == button && button.isSelected()) {
                         button.setSelected(true);
                         if (totalTickets < seance.getTicketsLeft()) {
@@ -68,7 +93,9 @@ public class BuyTicketPanel extends JDialog {
                             totalCost += seance.getTicketCost();
                             tickets.setText(String.valueOf(totalTickets));
                             cost.setText("Общая стоимость: " + totalCost + " BYN");
-                            ticketNumber = button.getText();
+
+                            numbersList.add(button.getText());
+
                             if (totalTickets == seance.getTicketsLeft() - 1) {
                                 buyButton.setEnabled(false);
                             } else {
@@ -81,6 +108,7 @@ public class BuyTicketPanel extends JDialog {
                             totalCost -= seance.getTicketCost();
                             tickets.setText(String.valueOf(totalTickets));
                             cost.setText("Общая стоимость: " + totalCost + " BYN");
+                            numbersList.remove(numbersList.size() - 1);
                             if (totalTickets < 1) {
                                 buyButton.setEnabled(false);
                             } else {
@@ -88,9 +116,15 @@ public class BuyTicketPanel extends JDialog {
                             }
                         }
                     }
+                    String delimiter = ", ";
+                    ticketNumber = String.join(delimiter, numbersList);
+                    System.out.println(ticketNumber);
+
                 }
             });
+
         }
+
 
         JPanel costPanel = new JPanel();
         costPanel.setLayout(new FlowLayout());
@@ -123,17 +157,28 @@ public class BuyTicketPanel extends JDialog {
         mainPanel.add(buttonPanel);
     }
 
+
     private void cancelActionPerformed() {
         dispose();
     }
 
     private void buyActionPerformed() {
         Ticket ticket = new Ticket();
-        ticket.setSeatNumber(Integer.parseInt(ticketNumber));
+        ticket.setSeatNumber(ticketNumber);
         ticket.setSeanceID(seance.getID());
+        seance.setTicketsLeft(seance.getTicketsLeft() - totalTickets);
         ticket.setUserID(user.getID());
         ticket.setAmountTickets(totalTickets);
         ticket.setCost(totalCost);
+        Date currentDate = new Date();
+
+        if (currentDate.before(seance.getSeanceDate()) ||
+                currentDate.equals(seance.getSeanceDate())) {
+            ticket.setValid(true);
+        } else {
+            ticket.setValid(false);
+        }
+
         Message message = new Message();
         message.setOperationType(MessageType.ADD);
         message.setMessageType(MessageType.TICKET);
@@ -141,9 +186,25 @@ public class BuyTicketPanel extends JDialog {
         try {
             ClientThread.sendMessage(message);
             ClientThread.receiveMessage();
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             e.printStackTrace();
         }
+
+        message = new
+
+                Message();
+        message.setOperationType(MessageType.UPDATE);
+        message.setMessageType(MessageType.SEANCE);
+        message.setMessage(seance);
+        try {
+            ClientThread.sendMessage(message);
+            ClientThread.receiveMessage();
+        } catch (
+                Exception e) {
+            e.printStackTrace();
+        }
+
         dispose();
     }
 

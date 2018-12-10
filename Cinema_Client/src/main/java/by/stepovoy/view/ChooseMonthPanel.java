@@ -58,7 +58,7 @@ public class ChooseMonthPanel extends JDialog {
                 int filmID = 0;
                 int previousID = 0;
                 Film film;
-                String filmName = "";
+                String filmName = null;
                 List<Ticket> ticketList;
                 double sumOfOrder = 0.;
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -74,7 +74,6 @@ public class ChooseMonthPanel extends JDialog {
                         previousID = seance.getFilmID();
                         seance = (Seance) ClientThread.receiveMessage().getMessage();
                         DateTime datetime = new DateTime(seance.getSeanceDate());
-                        System.out.println(monthsList.getSelectedItem());
                         if (monthsList.getSelectedItem() == (Integer) Integer.parseInt(datetime.toString("MM"))) {
                             message = new Message();
                             message.setOperationType(MessageType.GET);
@@ -83,7 +82,7 @@ public class ChooseMonthPanel extends JDialog {
                             ClientThread.sendMessage(message);
 
                             if (message.getMessageType() == MessageType.FILM) {
-                                film = ((Film) ClientThread.receiveMessage().getMessage());
+                                film = (Film) ClientThread.receiveMessage().getMessage();
                                 filmID = film.getID();
                                 filmName = film.getName();
                                 if (filmID != previousID) {
@@ -92,7 +91,6 @@ public class ChooseMonthPanel extends JDialog {
                             }
 
                             sumOfOrder += ticket.getCost();
-                            System.out.println("SUM = " + sumOfOrder + " FOR " + filmName);
                             dataset.setValue(sumOfOrder, filmName, "");
                         }
                     }
@@ -139,7 +137,7 @@ public class ChooseMonthPanel extends JDialog {
     }
 
 
-    private List<Integer> makeUniqueElements(List<Integer> arrayList) {
+    public static List<Integer> makeUniqueElements(List<Integer> arrayList) {
         Set<Integer> set = new LinkedHashSet<>(arrayList);
         return new ArrayList<>(set);
     }

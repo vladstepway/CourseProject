@@ -1,6 +1,6 @@
 package by.stepovoy.dao;
 
-import by.stepovoy.utils.IKey;
+import by.stepovoy.model.IKey;
 import by.stepovoy.utils.MyException;
 
 import java.sql.Connection;
@@ -10,12 +10,12 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public abstract class AbstractDao<T extends IKey> implements IGenericDao<T> {
+public abstract class AbstractDaoFactory<T extends IKey> implements IGenericDao<T> {
 
     Logger logger = Logger.getLogger(String.valueOf(this.getClass()));
     private Connection connection;
 
-    public AbstractDao(Connection connection) {
+    public AbstractDaoFactory(Connection connection) {
         this.connection = connection;
     }
 

@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SeanceDaoImplement extends AbstractDao<Seance> {
+public class SeanceDaoFactoryImplement extends AbstractDaoFactory<Seance> {
 
 
-    public SeanceDaoImplement(Connection connection) {
+    public SeanceDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 

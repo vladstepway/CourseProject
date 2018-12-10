@@ -3,8 +3,8 @@ package by.stepovoy.view;
 import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -47,7 +47,7 @@ public class UserControlPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 1000, 700);
+        setBounds(400, 200, 800, 300);
         setResizable(false);
         List<User> userList = null;
         try {
@@ -73,7 +73,7 @@ public class UserControlPanel extends JFrame {
         usersTable.setRowSorter(sorter);
         usersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(usersTable);
-        jScrollPane.setPreferredSize(new Dimension(1000, 700));
+        jScrollPane.setPreferredSize(new Dimension(800, 300));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
         usersTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -94,7 +94,7 @@ public class UserControlPanel extends JFrame {
         mainPanel.add(jScrollPane);
         setContentPane(mainPanel);
         setRoleButton = new JButton("Изменить роль");
-        setRoleButton.setPreferredSize(new Dimension(170, 25));
+//        setRoleButton.setPreferredSize(new Dimension(170, 25));
         setRoleButton.setEnabled(false);
         setRoleButton.addActionListener(new ActionListener() {
             @Override
@@ -107,7 +107,7 @@ public class UserControlPanel extends JFrame {
             }
         });
         JButton goBackButton = new JButton("Назад");
-        goBackButton.setPreferredSize(new Dimension(170, 25));
+//        goBackButton.setPreferredSize(new Dimension(170, 25));
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

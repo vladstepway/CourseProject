@@ -3,7 +3,7 @@ package by.stepovoy.view;
 import by.stepovoy.utils.FormValidator;
 import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.MessageType;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 
 import by.stepovoy.utils.DateValidator;
 import org.jdatepicker.impl.JDatePanelImpl;

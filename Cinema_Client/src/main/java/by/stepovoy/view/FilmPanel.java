@@ -5,8 +5,8 @@ import by.stepovoy.client.ClientThread;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Film;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.imageio.ImageIO;
@@ -52,7 +52,7 @@ public class FilmPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 1000, 700);
+        setBounds(400, 200, 900, 600);
         setResizable(false);
         this.user = user;
         films = new ArrayList<>();
@@ -70,7 +70,7 @@ public class FilmPanel extends JFrame {
         filmTable.setRowSorter(sorter);
         filmTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(filmTable);
-        jScrollPane.setPreferredSize(new Dimension(1000, 700));
+        jScrollPane.setPreferredSize(new Dimension(900, 400));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
         filmTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -126,10 +126,11 @@ public class FilmPanel extends JFrame {
             }
         });
         searchButton.setPreferredSize(new Dimension(25, 25));
-        JPanel checkBoxPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout());
 
-        checkBoxPanel.add(searchField);
-        checkBoxPanel.add(searchButton);
+        buttonsPanel.add(searchField);
+        buttonsPanel.add(searchButton);
 
         showButton = new JButton("Просмотреть");
         showButton.setPreferredSize(new Dimension(150, 25));
@@ -153,8 +154,6 @@ public class FilmPanel extends JFrame {
             }
         });
 
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
         if (user.getRole() != Role.USER) {
             JButton addButton = new JButton("Добавить");
             addButton.setPreferredSize(new Dimension(150, 25));
@@ -195,9 +194,9 @@ public class FilmPanel extends JFrame {
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(checkBoxPanel);
-        mainPanel.add(jScrollPane);
         mainPanel.add(buttonsPanel);
+        mainPanel.add(jScrollPane);
+//        mainPanel.add(buttonsPanel);
 
         setContentPane(mainPanel);
 
@@ -236,9 +235,9 @@ public class FilmPanel extends JFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            ShowFilmSeancePanel window = null;
+            SeancePanel window = null;
             if (film != null) {
-                window = new ShowFilmSeancePanel(this, film, user);
+                window = new SeancePanel(this, film, user);
 
             }
             if (window != null) {
@@ -286,7 +285,7 @@ public class FilmPanel extends JFrame {
     public void deleteActionPerformed(ActionEvent e) {
         int reply = JOptionPane.showConfirmDialog(this,
                 "Вы действительно хотите удалить \"" + filmTable.getValueAt(selectedRow, 2) + "\"?",
-                "Удаление мероприятия",
+                "Удаление фильм",
                 JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
             int selectedID = Integer.valueOf(String.valueOf(filmTable.getValueAt(selectedRow, 0)));
@@ -322,7 +321,7 @@ public class FilmPanel extends JFrame {
     }
 
     private void fillTable() {
-        String query = searchField.getText().toLowerCase();
+        final String query = searchField.getText().toLowerCase();
         ArrayList<Film> foundList = new ArrayList<Film>();
         if (query.length() != 0) {
             for (Film film : films) {

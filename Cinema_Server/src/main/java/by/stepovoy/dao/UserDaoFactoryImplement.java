@@ -1,8 +1,8 @@
 package by.stepovoy.dao;
 
 import by.stepovoy.utils.MyException;
-import by.stepovoy.model.user.Role;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.Role;
+import by.stepovoy.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDaoImplement extends AbstractDao<User> {
+public class UserDaoFactoryImplement extends AbstractDaoFactory<User> {
 
-    public UserDaoImplement(Connection connection) {
+    public UserDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 

@@ -6,7 +6,7 @@ import by.stepovoy.model.Film;
 import by.stepovoy.model.Hall;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
-import by.stepovoy.model.user.User;
+import by.stepovoy.model.User;
 import by.stepovoy.utils.Message;
 import by.stepovoy.utils.MessageType;
 import by.stepovoy.utils.MyException;
@@ -47,7 +47,7 @@ public class ServerThread extends Thread {
 
             daoFactory = new DaoFactory();
             IGenericDao dao = null;
-            Message request ;
+            Message request;
             Message answer = null;
             User user;
             MessageType operationType;
@@ -166,8 +166,8 @@ public class ServerThread extends Thread {
                         id = (Integer) request.getMessage();
                         dao.delete(dao.get(id));
                         break;
-                    case EDIT:
-                        LOGGER.info("********* EDIT operation *********");
+                    case UPDATE:
+                        LOGGER.info("********* UPDATE operation *********");
                         switch (messageType) {
                             case USER:
                                 LOGGER.info("********* USER *********");
