@@ -177,15 +177,8 @@ public class ClientThread extends Thread {
         objectOutput.flush();
         message = (Message) objectInput.readObject();
         List<Seance> seanceList = message.getSeanceList();
-//        List<Seance> resultList = new ArrayList<>();
-
         return seanceList.stream().filter(s -> s.getFilmID() == film.getID()).collect(Collectors.toList());
-//        for (Seance seance : seanceList) {
-//            if (seance.getFilmID() == film.getID()) {
-//                resultList.add(seance);
-//            }
-//        }
-//        return resultList;
+
     }
 
     public static List<Hall> getAllHalls() throws IOException, ClassNotFoundException {
@@ -205,7 +198,6 @@ public class ClientThread extends Thread {
         message.setMessageType(MessageType.TICKET);
         message.setMessage("all");
         objectOutput.writeObject(message);
-        objectOutput.flush();
         message = (Message) objectInput.readObject();
         return message.getTicketList();
     }
@@ -216,7 +208,6 @@ public class ClientThread extends Thread {
         message.setMessageType(MessageType.TICKET);
         message.setMessage(user.getID());
         objectOutput.writeObject(message);
-        objectOutput.flush();
         message = (Message) objectInput.readObject();
         return message.getTicketList();
     }

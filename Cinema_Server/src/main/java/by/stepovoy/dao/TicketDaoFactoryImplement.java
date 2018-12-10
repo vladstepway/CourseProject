@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TicketDaoImplement extends AbstractDao<Ticket> {
+public class TicketDaoFactoryImplement extends AbstractDaoFactory<Ticket> {
 
 
-    public TicketDaoImplement(Connection connection) {
+    public TicketDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 

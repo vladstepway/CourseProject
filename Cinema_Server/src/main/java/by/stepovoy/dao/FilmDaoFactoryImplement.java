@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FilmDaoImplement extends AbstractDao<Film> {
+public class FilmDaoFactoryImplement extends AbstractDaoFactory<Film> {
 
 
-    public FilmDaoImplement(Connection connection) {
+    public FilmDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 

@@ -147,17 +147,6 @@ public class SeancePanel extends JFrame {
         });
         buttonsPanel.add(buyButton);
         if (user.getRole() != Role.USER) {
-//            JButton editButton = new JButton("Редактировать");
-//            editButton.setPreferredSize(new Dimension(150, 25));
-//            editButton.setEnabled(false);
-//            editButton.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    updateActionPerformed(e);
-//                }
-//            });
-//            buttonsPanel.add(editButton);
-//            buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
             addButton = new JButton("Добавить сеанс");
             addButton.setPreferredSize(new Dimension(150, 25));
             addButton.addActionListener(new ActionListener() {
@@ -170,6 +159,7 @@ public class SeancePanel extends JFrame {
             deleteButton = new JButton("Удалить сеанс");
             deleteButton.setPreferredSize(new Dimension(150, 25));
             deleteButton.setEnabled(false);
+            buttonsPanel.add(deleteButton);
             deleteButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -187,7 +177,7 @@ public class SeancePanel extends JFrame {
 
 
         buttonsPanel.add(returnButton);
-        buttonsPanel.add(deleteButton);
+
         headerPanel.add(infoPanel);
         headerPanel.add(buttonsPanel);
 

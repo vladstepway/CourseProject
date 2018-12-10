@@ -36,7 +36,7 @@ public class FormValidator {
             fields[5].setBorder(redBorder);
             result = false;
         }
-        int[] sizes = {15, 15, 15, 15, 30};
+        int[] sizes = {30, 30, 30, 30, 30,30};
         for (int i = 0; i < fields.length; i++) {
             if (fields[i].getText().length() > sizes[i]) {
                 fields[i].setBorder(redBorder);

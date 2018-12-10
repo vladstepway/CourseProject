@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserDaoImplement extends AbstractDao<User> {
+public class UserDaoFactoryImplement extends AbstractDaoFactory<User> {
 
-    public UserDaoImplement(Connection connection) {
+    public UserDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 

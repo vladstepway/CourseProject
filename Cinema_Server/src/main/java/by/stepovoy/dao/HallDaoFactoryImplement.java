@@ -10,9 +10,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HallDaoImplement extends AbstractDao<Hall> {
+public class HallDaoFactoryImplement extends AbstractDaoFactory<Hall> {
 
-    public HallDaoImplement(Connection connection) {
+    public HallDaoFactoryImplement(Connection connection) {
         super(connection);
     }
 
