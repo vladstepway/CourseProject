@@ -28,8 +28,6 @@ public class DaoFactory implements IDaoFactory {
     private static ResultSet resultSet;
 
     public DaoFactory() throws SQLException, IOException, ClassNotFoundException {
-
-
         Properties props = new Properties();
         FileInputStream in = new FileInputStream("src/main/resources/database-config.properties");
         props.load(in);
@@ -62,7 +60,7 @@ public class DaoFactory implements IDaoFactory {
                 @Override
                 public IGenericDao createDao(Object object) throws MyException {
                     try {
-                        Class<?> daoClass = Class.forName("by.stepovoy.dao." + someClass.getSimpleName() + "DaoImplement");
+                        Class<?> daoClass = Class.forName("by.stepovoy.dao." + someClass.getSimpleName() + "DaoFactoryImplement");
                         Constructor<?> constructor = daoClass.getConstructor(Connection.class);
                         Object daoObject = constructor.newInstance(connection);
                         return (IGenericDao) daoObject;

@@ -17,6 +17,29 @@
                     <target>7</target>
                 </configuration>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
+                <!--<version>3.0.0</version>-->
+                <!--<configuration>-->
+                    <!--<configLocation>checkstyle.xml</configLocation>-->
+                    <!--<suppressionsLocation>suppressions.xml</suppressionsLocation>-->
+                    <!--<encoding>UTF-8</encoding>-->
+                    <!--<consoleOutput>true</consoleOutput>-->
+                    <!--<failsOnError>true</failsOnError>-->
+                    <!--<includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+                    <!--<includeResources>true</includeResources>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>validate</id>-->
+                        <!--<phase>validate</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>check</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
     <packaging>jar</packaging>
@@ -29,7 +52,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.12</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
         <!--LOGGING-->
         <dependency>
             <groupId>org.slf4j</groupId>

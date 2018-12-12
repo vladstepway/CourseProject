@@ -2,23 +2,32 @@ package by.stepovoy.view;
 
 
 import by.stepovoy.client.ClientThread;
-import by.stepovoy.utils.DateValidator;
-import by.stepovoy.utils.Message;
-import by.stepovoy.utils.MessageType;
 import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
 import by.stepovoy.model.User;
+import by.stepovoy.utils.Message;
+import by.stepovoy.utils.MessageType;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.Box;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Arrays;
 
 
 public class BuyTicketPanel extends JDialog {
@@ -37,13 +46,11 @@ public class BuyTicketPanel extends JDialog {
         setLocationRelativeTo(null);
         this.user = user;
         this.seance = seance;
-        setBounds(550, 600, 450, 400);
-
+        setBounds(550, 600, 450, 300);
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout());
         mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         setContentPane(mainPanel);
-
         setTitle("Покупка билетов");
         List<String> numbersList = new LinkedList<>();
         String delimiter = ", ";
@@ -57,7 +64,6 @@ public class BuyTicketPanel extends JDialog {
         }
         seats = str.split(delimiter);
         List<String> soldTickets = new LinkedList<>(Arrays.asList(seats));
-
         ArrayList<JToggleButton> buttonList = new ArrayList<>();
         for (String string : soldTickets) {
             for (int i = 0; i < 40; i++) {
@@ -68,7 +74,6 @@ public class BuyTicketPanel extends JDialog {
                 }
             }
         }
-
         cost = new JLabel("Общая стоимость: 0 BYN");
         cost.setHorizontalAlignment(SwingConstants.CENTER);
         tickets = new JTextField();
@@ -76,16 +81,12 @@ public class BuyTicketPanel extends JDialog {
         tickets.setEditable(false);
         tickets.setHorizontalAlignment(JTextField.CENTER);
         tickets.setText("0");
-
         totalTickets = 0;
         totalCost = 0;
-
         for (final JToggleButton button : buttonList) {
             button.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
                     if (e.getSource() == button && button.isSelected()) {
                         button.setSelected(true);
                         if (totalTickets < seance.getTicketsLeft()) {
@@ -122,10 +123,7 @@ public class BuyTicketPanel extends JDialog {
 
                 }
             });
-
         }
-
-
         JPanel costPanel = new JPanel();
         costPanel.setLayout(new FlowLayout());
         costPanel.add(tickets);
@@ -156,12 +154,9 @@ public class BuyTicketPanel extends JDialog {
         mainPanel.add(cost);
         mainPanel.add(buttonPanel);
     }
-
-
     private void cancelActionPerformed() {
         dispose();
     }
-
     private void buyActionPerformed() {
         Ticket ticket = new Ticket();
         ticket.setSeatNumber(ticketNumber);
@@ -171,14 +166,12 @@ public class BuyTicketPanel extends JDialog {
         ticket.setAmountTickets(totalTickets);
         ticket.setCost(totalCost);
         Date currentDate = new Date();
-
         if (currentDate.before(seance.getSeanceDate()) ||
                 currentDate.equals(seance.getSeanceDate())) {
             ticket.setValid(true);
         } else {
             ticket.setValid(false);
         }
-
         Message message = new Message();
         message.setOperationType(MessageType.ADD);
         message.setMessageType(MessageType.TICKET);
@@ -190,10 +183,7 @@ public class BuyTicketPanel extends JDialog {
                 Exception e) {
             e.printStackTrace();
         }
-
-        message = new
-
-                Message();
+        message = new Message();
         message.setOperationType(MessageType.UPDATE);
         message.setMessageType(MessageType.SEANCE);
         message.setMessage(seance);
@@ -207,5 +197,4 @@ public class BuyTicketPanel extends JDialog {
 
         dispose();
     }
-
 }

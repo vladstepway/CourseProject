@@ -6,20 +6,24 @@ import by.stepovoy.model.Seance;
 import by.stepovoy.model.Ticket;
 import org.joda.time.DateTime;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 public class ReportGeneratorPanel extends JFrame {
 
     public ReportGeneratorPanel() {
-        setSize(400, 400);
+        setSize(400, 150);
         setLocationRelativeTo(null);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

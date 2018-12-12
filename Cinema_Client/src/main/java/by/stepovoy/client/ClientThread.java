@@ -10,9 +10,16 @@ import by.stepovoy.model.User;
 import by.stepovoy.view.MenuPanel;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
@@ -210,6 +217,10 @@ public class ClientThread extends Thread {
         objectOutput.writeObject(message);
         message = (Message) objectInput.readObject();
         return message.getTicketList();
+    }
+
+    public static void messageBox(String message) {
+        JOptionPane.showMessageDialog(null, message);
     }
 
 }

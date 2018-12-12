@@ -52,7 +52,7 @@ public class FilmPanel extends JFrame {
                 }
             }
         });
-        setBounds(400, 200, 900, 600);
+        setBounds(400, 200, 900, 300);
         setResizable(false);
         this.user = user;
         films = new ArrayList<>();
@@ -70,7 +70,7 @@ public class FilmPanel extends JFrame {
         filmTable.setRowSorter(sorter);
         filmTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane jScrollPane = new JScrollPane(filmTable);
-        jScrollPane.setPreferredSize(new Dimension(900, 400));
+        jScrollPane.setPreferredSize(new Dimension(900, 300));
         jScrollPane.setBorder(new BevelBorder(BevelBorder.LOWERED));
         filmTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -128,6 +128,7 @@ public class FilmPanel extends JFrame {
         searchButton.setPreferredSize(new Dimension(25, 25));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout());
+        buttonsPanel.setPreferredSize(new Dimension(900,150));
 
         buttonsPanel.add(searchField);
         buttonsPanel.add(searchButton);

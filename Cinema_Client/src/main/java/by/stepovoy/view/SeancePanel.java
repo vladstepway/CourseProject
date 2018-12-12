@@ -189,6 +189,7 @@ public class SeancePanel extends JFrame {
     private void buyActionPerformed(ActionEvent e) throws IOException, ClassNotFoundException {
         BuyTicketPanel window = new BuyTicketPanel(this, user, getSelectedSeance(), true);
         window.setVisible(true);
+        window.setLocationRelativeTo(null);
     }
 
     @SuppressFBWarnings("DM_BOXED_PRIMITIVE_FOR_PARSING")
